@@ -9,7 +9,7 @@ export function Heading1({
   return (
     <h1
       className={cn(
-        'scroll-m-20 text-4xl font-extrabold tracking-tight text-balance',
+        'scroll-m-20 text-3xl font-semibold text-balance mt-8 mb-4',
         className,
       )}
       {...props}
@@ -27,7 +27,7 @@ export function Heading2({
   return (
     <h2
       className={cn(
-        'scroll-m-20 border-b pb-2 text-3xl font-semibold tracking-tight first:mt-0',
+        'scroll-m-20 border-b pb-2 text-2xl font-semibold first:mt-0 mt-8 mb-4',
         className,
       )}
       {...props}
@@ -45,7 +45,7 @@ export function Heading3({
   return (
     <h3
       className={cn(
-        'scroll-m-20 text-2xl font-semibold tracking-tight',
+        'scroll-m-20 text-xl font-semibold',
         className,
       )}
       {...props}
