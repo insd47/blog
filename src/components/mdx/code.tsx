@@ -1,5 +1,5 @@
 import { ComponentProps } from 'react';
-import { cn } from '@/lib/utilities/shadcn';
+import { cn } from '@/utils/shadcn';
 
 export function Code({ className, ...props }: ComponentProps<'code'>) {
   return (

@@ -2,6 +2,10 @@ import type { Metadata } from 'next';
 import './globals.css';
 import { PropsWithChildren } from 'react';
 import { ThemeProvider } from '@/lib/providers/theme';
+import { Inter } from 'next/font/google';
+import { cn } from '@/utils/shadcn';
+
+const inter = Inter({ subsets: ['latin'], variable: '--font-sans' });
 
 export const metadata: Metadata = {
   title: 'Create Next App',
@@ -10,7 +14,11 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: PropsWithChildren) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html
+      lang="en"
+      suppressHydrationWarning
+      className={cn('font-sans', inter.variable)}
+    >
       <body>
         <ThemeProvider
           attribute="class"

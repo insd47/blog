@@ -1,5 +1,5 @@
 import { ComponentProps } from 'react';
-import { cn } from '@/lib/utilities/shadcn';
+import { cn } from '@/utils/shadcn';
 
 export function Heading1({
   children,
@@ -44,10 +44,7 @@ export function Heading3({
 }: ComponentProps<'h3'>) {
   return (
     <h3
-      className={cn(
-        'scroll-m-20 text-xl font-semibold',
-        className,
-      )}
+      className={cn('scroll-m-20 text-xl font-semibold', className)}
       {...props}
     >
       {children}
