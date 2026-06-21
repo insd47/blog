@@ -1,13 +1,12 @@
 import Link from 'next/link';
-import { formatPostDate, getAllPosts } from '@/lib/blog';
+import { posts } from '@/lib/content/posts';
 
 export default function Home() {
   return <HomePage />;
 }
 
 async function HomePage() {
-  const posts = await getAllPosts();
-  const recentPosts = posts.slice(0, 5);
+  const recentPosts = (await posts.list()).slice(0, 5);
 
   return (
     <main className="mx-auto flex w-full max-w-3xl flex-1 flex-col px-6 py-16">
@@ -36,13 +35,15 @@ async function HomePage() {
                 <h3 className="text-lg font-medium group-hover:underline group-hover:underline-offset-4">
                   {post.title}
                 </h3>
-                <p className="mt-2 text-muted-foreground">{post.description}</p>
+                <p className="mt-2 text-muted-foreground">
+                  {post.description}
+                </p>
               </Link>
               <time
-                dateTime={post.publishedAt}
+                dateTime={post.date}
                 className="mt-2 block text-sm text-muted-foreground"
               >
-                {formatPostDate(post.publishedAt)}
+                {posts.formatDate(post.date)}
               </time>
             </article>
           ))}

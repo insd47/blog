@@ -9,8 +9,6 @@ Next.js App Router blog boilerplate with shadcn/ui and MDX.
 - Tailwind CSS 4
 - shadcn/ui b0 preset
 - `@next/mdx`
-- `next-mdx-remote`
-- `gray-matter`
 
 ## Getting Started
 
@@ -23,24 +21,22 @@ Open http://localhost:3000.
 
 ## Content
 
-Posts live in `content/posts/*.mdx`.
+Posts live under `src/content/posts/<slug>/index.mdx`.
 
 ```mdx
----
-title: "Post title"
-description: "Short description for lists and metadata"
-publishedAt: "2026-06-14"
-updatedAt: "2026-06-14"
-tags:
-  - Next.js
-draft: false
----
+import thumbnail from './thumbnail.png';
+
+export const metadata = {
+  title: 'Post title',
+  description: 'Short post description',
+  date: '2026-06-14',
+  tags: ['Next.js'],
+  thumbnail,
+};
 
 Post body...
 ```
 
-- `draft: true` posts are excluded from production routes, RSS, and sitemap.
-- Slugs come from file names, for example `content/posts/hello.mdx` becomes `/posts/hello`.
 - Shared MDX components live in `src/mdx-components.tsx`.
 - Set `NEXT_PUBLIC_SITE_URL` in production so canonical URLs, RSS, and sitemap use the deployed domain.
 
@@ -48,5 +44,5 @@ Post body...
 
 - `/` shows recent posts.
 - `/posts` shows all posts.
-- `/posts/[slug]` renders one MDX post.
+- `/posts/<slug>` imports `src/content/posts/<slug>/index.mdx`.
 - `/rss.xml`, `/sitemap.xml`, and `/robots.txt` are generated from MDX metadata.

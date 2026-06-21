@@ -1,5 +1,5 @@
 import { ComponentProps } from 'react';
-import { cn } from '@/utils/shadcn';
+import { cn } from '@/lib/utils/shadcn';
 
 export function UnorderedList({ className, ...props }: ComponentProps<'ul'>) {
   return (

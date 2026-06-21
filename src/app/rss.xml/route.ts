@@ -1,5 +1,5 @@
-import { getSiteUrl, siteConfig } from '@/config/site';
-import { getAllPosts } from '@/lib/blog';
+import { getSiteUrl, siteConfig } from '@/lib/config/site';
+import { posts } from '@/lib/content/posts';
 
 function escapeXml(value: string) {
   return value
@@ -12,9 +12,9 @@ function escapeXml(value: string) {
 
 export async function GET() {
   const siteUrl = getSiteUrl();
-  const posts = await getAllPosts({ includeDrafts: false });
+  const allPosts = await posts.list();
 
-  const items = posts
+  const items = allPosts
     .map((post) => {
       const url = `${siteUrl}/posts/${post.slug}`;
 
@@ -24,7 +24,7 @@ export async function GET() {
           <description>${escapeXml(post.description)}</description>
           <link>${url}</link>
           <guid>${url}</guid>
-          <pubDate>${new Date(post.publishedAt).toUTCString()}</pubDate>
+          <pubDate>${new Date(post.date).toUTCString()}</pubDate>
         </item>`;
     })
     .join('');
