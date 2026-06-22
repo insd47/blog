@@ -20,7 +20,7 @@
 
   :root {
     @apply font-sans flex-col flex min-h-full scheme-dark text-foreground;
-    @apply bg-[image-set('/noise/1x.png'_1x,'/noise/2x.png'_2x)] bg-repeat;
+    @apply bg-[image-set('/assets/noise.png'_1x,'/assets/noise@2x.png'_2x)] bg-repeat;
   }
 
   body {

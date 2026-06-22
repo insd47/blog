@@ -9,6 +9,7 @@ export default function HeaderNavigation({ className, ...props }: ComponentProps
       className={cn(
         'px-6 gap-6 flex items-center text-[13px]',
         'font-mono border-r bg-foreground/3',
+        '*:text-muted-foreground *:hover:text-foreground *:transition-colors',
         className,
       )}
     >
