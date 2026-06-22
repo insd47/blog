@@ -1,5 +1,5 @@
 import { ComponentProps } from 'react';
-import { cn } from '@/lib/utils/shadcn';
+import { cn } from '@/lib/utils/cn';
 
 export function Paragraph({ className, ...props }: ComponentProps<'p'>) {
   return <p className={cn('my-4 leading-7', className)} {...props} />;

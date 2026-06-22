@@ -54,7 +54,6 @@ export function post(post: Post): Metadata {
       url: `/posts/${post.slug}`,
       publishedTime: post.date,
       authors: [siteConfig.author.name],
-      tags: post.tags,
     },
   };
 }

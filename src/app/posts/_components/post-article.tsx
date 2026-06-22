@@ -17,11 +17,8 @@ export function PostArticle({ post, children }: PostArticleProps) {
           <p className="mt-4 text-lg leading-8 text-muted-foreground">
             {post.description}
           </p>
-          <div className="mt-5 flex flex-wrap gap-x-3 gap-y-1 text-sm text-muted-foreground">
+          <div className="mt-5 text-sm text-muted-foreground">
             <time dateTime={post.date}>{posts.formatDate(post.date)}</time>
-            {post.tags.map((tag) => (
-              <span key={tag}>#{tag}</span>
-            ))}
           </div>
         </header>
 

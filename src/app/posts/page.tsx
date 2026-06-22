@@ -29,11 +29,8 @@ export default async function PostsPage() {
               <p className="mt-2 text-muted-foreground">{post.description}</p>
             </Link>
 
-            <div className="mt-3 flex flex-wrap gap-x-3 gap-y-1 text-sm text-muted-foreground">
+            <div className="mt-3 text-sm text-muted-foreground">
               <time dateTime={post.date}>{posts.formatDate(post.date)}</time>
-              {post.tags.map((tag) => (
-                <span key={tag}>#{tag}</span>
-              ))}
             </div>
           </article>
         ))}

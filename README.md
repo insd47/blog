@@ -1,13 +1,12 @@
 # Blog
 
-Next.js App Router blog boilerplate with shadcn/ui and MDX.
+Next.js App Router blog skeleton with MDX.
 
 ## Stack
 
 - Next.js 16
 - React 19
 - Tailwind CSS 4
-- shadcn/ui b0 preset
 - `@next/mdx`
 
 ## Getting Started
@@ -24,14 +23,10 @@ Open http://localhost:3000.
 Posts live under `src/content/posts/<slug>/index.mdx`.
 
 ```mdx
-import thumbnail from './thumbnail.png';
-
 export const metadata = {
   title: 'Post title',
   description: 'Short post description',
   date: '2026-06-14',
-  tags: ['Next.js'],
-  thumbnail,
 };
 
 Post body...
