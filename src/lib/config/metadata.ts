@@ -1,16 +1,15 @@
 import type { Metadata } from 'next';
 import type { Post } from '@/lib/content/post';
-import { getSiteUrl, siteConfig } from './site';
-
-const description = siteConfig.description;
 
 export const base: Metadata = {
-  metadataBase: new URL(getSiteUrl()),
+  metadataBase: process.env.VERCEL_PROJECT_PRODUCTION_URL
+    ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
+    : 'http://localhost:3000',
   title: {
-    default: siteConfig.name,
-    template: `%s | ${siteConfig.name}`,
+    default: '황인성',
+    template: '%s | 황인성',
   },
-  description,
+  description: '황인성 = (Software Engineer) => Tauri + Unity + React + DevOps',
   alternates: {
     canonical: '/',
     types: {
@@ -20,22 +19,27 @@ export const base: Metadata = {
   openGraph: {
     type: 'website',
     locale: 'ko_KR',
-    siteName: siteConfig.name,
-    title: siteConfig.name,
-    description,
+    siteName: '황인성',
+    title: '황인성',
+    description: '황인성 = (Software Engineer) => Tauri + Unity + React + DevOps',
+  },
+  icons: {
+    icon: [
+      { url: '/favicon/light.svg', media: '(prefers-color-scheme: light)' },
+      { url: '/favicon/dark.svg', media: '(prefers-color-scheme: dark)' },
+    ],
   },
 };
 
-export function basic(title: string, pageDescription = description): Metadata {
+export function basic(
+  title: string,
+  description = '황인성 = (Software Engineer) => Tauri + Unity + React + DevOps',
+): Metadata {
   return {
     ...base,
     title,
-    description: pageDescription,
-    openGraph: {
-      ...base.openGraph,
-      title,
-      description: pageDescription,
-    },
+    description,
+    openGraph: { ...base.openGraph, title, description },
   };
 }
 
@@ -53,7 +57,7 @@ export function post(post: Post): Metadata {
       description: post.description,
       url: `/posts/${post.slug}`,
       publishedTime: post.date,
-      authors: [siteConfig.author.name],
+      authors: ['황인성'],
     },
   };
 }

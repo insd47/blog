@@ -1,22 +1,23 @@
 import type { MetadataRoute } from 'next';
-import { getSiteUrl } from '@/lib/config/site';
 import { posts } from '@/lib/content/posts';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const siteUrl = getSiteUrl();
+  const origin = (
+    process.env.NEXT_PUBLIC_SITE_URL ?? 'http://localhost:3000'
+  ).replace(/\/$/, '');
   const allPosts = await posts.list();
 
   return [
     {
-      url: siteUrl,
+      url: origin,
       lastModified: new Date(),
     },
     {
-      url: `${siteUrl}/posts`,
+      url: `${origin}/posts`,
       lastModified: new Date(),
     },
     ...allPosts.map((post) => ({
-      url: `${siteUrl}/posts/${post.slug}`,
+      url: `${origin}/posts/${post.slug}`,
       lastModified: new Date(post.date),
     })),
   ];
