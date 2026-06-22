@@ -1,19 +1,18 @@
-import Banner from '@/app/_views/banner';
+import BannerSection from '@/app/_views/banner';
 import Separator from '@/components/separator';
-import Games from '@/app/_views/game';
+import GamesSection from '@/app/_views/games';
+import Projects from '@/app/_views/projects';
 
-export default function Home() {
-  return <HomePage />;
-}
-
-async function HomePage() {
-
+export default function HomePage() {
   return (
     <main>
-      <Banner />
+      <BannerSection />
       <Separator />
 
-      <Games />
+      <GamesSection />
+      <Separator />
+
+      <Projects />
       <Separator />
     </main>
   );

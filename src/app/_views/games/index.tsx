@@ -1,8 +1,8 @@
 import Section from '@/app/_views/section';
-import GameCard from '@/app/_views/game/card';
-import { ChunithmIcon, MaimaiIcon, SdvxIcon } from '@/app/_views/game/icons';
+import GameCard from '@/app/_views/games/card';
+import { ChunithmIcon, MaimaiIcon, SdvxIcon } from '@/app/_views/games/icons';
 
-export default function Games() {
+export default function GamesSection() {
   return (
     <Section>
       <header className="px-4 flex items-center">

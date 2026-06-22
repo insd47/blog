@@ -2,7 +2,7 @@ import { ComponentProps, Fragment } from 'react';
 import { cn } from '@/lib/utils/cn';
 import styles from './styles.module.css';
 
-export default function Banner({ className, ...props }: ComponentProps<'section'>) {
+export default function BannerSection({ className, ...props }: ComponentProps<'section'>) {
   const stacks = ['Tauri', 'React', 'Unity', 'DevOps'];
 
   return (
