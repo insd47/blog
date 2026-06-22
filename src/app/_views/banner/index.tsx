@@ -14,7 +14,7 @@ export default function Banner({ className, ...props }: ComponentProps<'section'
         className,
       )}
     >
-      <p className="text-foreground/60 [&>strong]:text-foreground [&>strong]:font-normal text-center">
+      <p className="text-foreground/60 *:text-foreground *:font-normal text-center">
         <strong>황인성</strong> = (Software Engineer) ={'> '}
         {stacks.map((stack, index) => (
           <Fragment key={stack}>
