@@ -1,6 +1,6 @@
 import Section from '@/app/_views/section';
-import GameCard from '@/app/_views/games/card';
-import { ChunithmIcon, MaimaiIcon, SdvxIcon } from '@/app/_views/games/icons';
+import GameCard from '@/components/cards/game';
+import * as icons from '@/app/_views/games/icons';
 
 export default function GamesSection() {
   return (
@@ -10,7 +10,7 @@ export default function GamesSection() {
       </header>
       <div className="flex *:flex-1">
         <GameCard
-          icon={<SdvxIcon />}
+          icon={icons.sdvx}
           title="Sound Voltex"
           rating={21.309}
           grade={{ name: 'IMPERIAL II', gap: 1 }}
@@ -18,7 +18,7 @@ export default function GamesSection() {
         />
 
         <GameCard
-          icon={<MaimaiIcon />}
+          icon={icons.maimai}
           title="maimai DX"
           rating={16152}
           grade={{ name: 'RAINBOW', gap: 100 }}
@@ -26,7 +26,7 @@ export default function GamesSection() {
         />
 
         <GameCard
-          icon={<ChunithmIcon />}
+          icon={icons.chunithm}
           title="CHUNITHM"
           rating={17.14}
           grade={{ name: 'RAINBOW(B)', gap: 0.1 }}

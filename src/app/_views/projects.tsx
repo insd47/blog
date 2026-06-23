@@ -1,5 +1,5 @@
 import Section from '@/app/_views/section';
-import ProjectCard from '@/components/list/project';
+import ProjectCard from '@/components/cards/project';
 import Link from 'next/link';
 import config from '@/lib/config';
 
