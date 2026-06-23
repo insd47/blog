@@ -13,14 +13,18 @@
   --font-mono: 'JetBrains Mono', monospace;
 }
 
+@utility bg-noise {
+  background-image: image-set("/assets/noise.png" 1x, "/assets/noise@2x.png" 2x);
+  background-repeat: repeat;
+}
+
 @layer base {
   * {
     @apply border-border;
   }
 
   :root {
-    @apply font-sans flex-col flex min-h-full scheme-dark text-foreground;
-    @apply bg-[image-set('/assets/noise.png'_1x,'/assets/noise@2x.png'_2x)] bg-repeat;
+    @apply font-sans flex-col flex min-h-full scheme-dark text-foreground bg-noise;
   }
 
   body {
@@ -28,7 +32,7 @@
   }
 
   main {
-    @apply border-b flex-1;
+    @apply flex-1;
   }
 }
 

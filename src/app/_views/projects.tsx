@@ -1,5 +1,7 @@
 import Section from '@/app/_views/section';
+import ProjectCard from '@/components/list/project';
 import Link from 'next/link';
+import config from '@/lib/config';
 
 export default function Projects() {
   return (
@@ -10,7 +12,11 @@ export default function Projects() {
           <p className="decoration-0 text-foreground/60">={'>'}</p>
         </Link>
       </header>
-      <div className="h-40 "></div>
+      <div>
+        {config.projects.map(({ id, ...project }) => (
+          <ProjectCard key={id} id={id} {...project} />
+        ))}
+      </div>
     </Section>
   );
 }

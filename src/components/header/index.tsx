@@ -11,7 +11,7 @@ export default function Header({
   return (
     <header
       {...props}
-      className={cn('flex border-b h-15 sticky top-0 z-50', className)}
+      className={cn('flex border-b bg-noise h-15 sticky top-0 z-50', className)}
     >
       <HeaderLogo />
       <HeaderNavigation />
