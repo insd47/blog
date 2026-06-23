@@ -9,7 +9,7 @@ export const base: Metadata = {
     default: '황인성',
     template: '%s | 황인성',
   },
-  description: '황인성 = (Software Engineer) => Tauri + Unity + React + DevOps',
+  description: 'Junior Software Engineer',
   alternates: {
     canonical: '/',
     types: {
@@ -20,8 +20,9 @@ export const base: Metadata = {
     type: 'website',
     locale: 'ko_KR',
     siteName: '황인성',
-    title: '황인성',
-    description: '황인성 = (Software Engineer) => Tauri + Unity + React + DevOps',
+    title: '황인성 / INSUNG HWANG',
+    description: 'Junior Software Engineer',
+    images: '/og.png',
   },
   icons: {
     icon: [
@@ -31,10 +32,7 @@ export const base: Metadata = {
   },
 };
 
-export function basic(
-  title: string,
-  description = '황인성 = (Software Engineer) => Tauri + Unity + React + DevOps',
-): Metadata {
+export function basic(title: string, description = base.description!): Metadata {
   return {
     ...base,
     title,
