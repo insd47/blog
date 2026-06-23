@@ -1,11 +1,10 @@
-import './globals.css';
+import { Metadata } from 'next';
 import { PropsWithChildren } from 'react';
-import { base as metadata } from '@/lib/config/metadata';
 import Header from '@/components/header';
 import Footer from '@/components/footer';
 import Separator from '@/components/separator';
-
-export { metadata };
+import config from '@/lib/config';
+import './globals.css';
 
 export default function RootLayout({ children }: PropsWithChildren) {
   return (
@@ -20,3 +19,5 @@ export default function RootLayout({ children }: PropsWithChildren) {
     </html>
   );
 }
+
+export const metadata: Metadata = config.metadata.base;
