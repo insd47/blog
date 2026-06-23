@@ -9,12 +9,12 @@ export default function BannerSection({ className, ...props }: ComponentProps<'s
     <section
       {...props}
       className={cn(
-        'h-36 flex flex-center font-mono border-b select-none',
+        'h-36 flex flex-center font-mono border-b select-none px-6',
         styles.banner,
         className,
       )}
     >
-      <p className="text-foreground/60 *:text-foreground *:font-normal text-center">
+      <p className="text-foreground/60 *:text-foreground *:font-normal text-center text-pretty">
         <strong>황인성</strong> = (Software Engineer) ={'> '}
         {stacks.map((stack, index) => (
           <Fragment key={stack}>

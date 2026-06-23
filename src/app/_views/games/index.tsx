@@ -8,7 +8,7 @@ export default function GamesSection() {
       <header className="px-4 flex items-center">
         <h2>Games</h2>
       </header>
-      <div className="grid grid-cols-3">
+      <div className="flex *:flex-1">
         <GameCard
           icon={<SdvxIcon />}
           title="Sound Voltex"

@@ -30,13 +30,13 @@ export default function GameCard({
         color3={colors[2]}
       />
 
-      <div className="flex items-center *:mr-2 mb-2.5 text-sm">
-        {icon} {title}
+      <div className="flex items-center *:mr-2 md:mb-2.5 mb-1.5 text-sm">
+        {icon} <span className="max-sm:hidden">{title}</span>
       </div>
 
-      <div className="flex mb-6">
-        <p className="text-4xl mr-3 text-foreground">{rating}</p>
-        <p className="mt-0.75 text-xs text-foreground/60">{grade.name}</p>
+      <div className="flex md:mb-6 mb-3.5">
+        <p className="md:text-4xl mr-3 text-foreground">{rating}</p>
+        <p className="mt-0.75 text-xs text-foreground/60 max-sm:hidden">{grade.name}</p>
       </div>
 
       <div className="relative h-0.5 bg-foreground/30 mb-1">

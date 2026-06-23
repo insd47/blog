@@ -18,6 +18,11 @@
   background-repeat: repeat;
 }
 
+@utility no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
 @layer base {
   * {
     @apply border-border;
@@ -28,11 +33,11 @@
   }
 
   body {
-    @apply max-w-240 w-full mx-auto border-x flex-1 flex flex-col;
+    @apply lg:max-w-240 w-full mx-auto lg:border-x flex-1 flex flex-col;
   }
 
   main {
-    @apply flex-1;
+    @apply flex-1 border-b *:last:-mb-px;
   }
 }
 
