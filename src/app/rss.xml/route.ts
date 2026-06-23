@@ -1,5 +1,4 @@
-import { getSiteUrl, siteConfig } from '@/config/site';
-import { getAllPosts } from '@/lib/blog';
+import { posts } from '@/lib/content/posts';
 
 function escapeXml(value: string) {
   return value
@@ -11,12 +10,14 @@ function escapeXml(value: string) {
 }
 
 export async function GET() {
-  const siteUrl = getSiteUrl();
-  const posts = await getAllPosts({ includeDrafts: false });
+  const origin = (
+    process.env.NEXT_PUBLIC_SITE_URL ?? 'http://localhost:3000'
+  ).replace(/\/$/, '');
+  const allPosts = await posts.list();
 
-  const items = posts
+  const items = allPosts
     .map((post) => {
-      const url = `${siteUrl}/posts/${post.slug}`;
+      const url = `${origin}/posts/${post.slug}`;
 
       return `
         <item>
@@ -24,7 +25,7 @@ export async function GET() {
           <description>${escapeXml(post.description)}</description>
           <link>${url}</link>
           <guid>${url}</guid>
-          <pubDate>${new Date(post.publishedAt).toUTCString()}</pubDate>
+          <pubDate>${new Date(post.date).toUTCString()}</pubDate>
         </item>`;
     })
     .join('');
@@ -32,9 +33,9 @@ export async function GET() {
   const rss = `<?xml version="1.0" encoding="UTF-8" ?>
     <rss version="2.0">
       <channel>
-        <title>${escapeXml(siteConfig.name)}</title>
-        <description>${escapeXml(siteConfig.description)}</description>
-        <link>${siteUrl}</link>
+        <title>${escapeXml('insd blog')}</title>
+        <description>${escapeXml('MDX로 작성하는 개인 블로그입니다.')}</description>
+        <link>${origin}</link>
         <language>ko</language>
         ${items}
       </channel>
