@@ -1,47 +1,30 @@
-import { posts } from '@/lib/content/posts';
-
-function escapeXml(value: string) {
-  return value
-    .replaceAll('&', '&amp;')
-    .replaceAll('<', '&lt;')
-    .replaceAll('>', '&gt;')
-    .replaceAll('"', '&quot;')
-    .replaceAll("'", '&apos;');
-}
+import posts from '@/lib/content/posts';
+import config from '@/lib/config';
+import { Feed } from 'feed';
 
 export async function GET() {
-  const origin = (
-    process.env.NEXT_PUBLIC_SITE_URL ?? 'http://localhost:3000'
-  ).replace(/\/$/, '');
-  const allPosts = await posts.list();
+  const feed = new Feed({
+    title: '황인성',
+    description: config.metadata.base.description!,
+    id: config.metadata.url,
+    link: config.metadata.url,
+    language: 'ko',
+    feed: config.metadata.url + '/rss.xml',
+  });
 
-  const items = allPosts
-    .map((post) => {
-      const url = `${origin}/posts/${post.slug}`;
+  for (const post of await posts.list()) {
+    const url = `${config.metadata.url}/posts/${post.slug}`;
 
-      return `
-        <item>
-          <title>${escapeXml(post.title)}</title>
-          <description>${escapeXml(post.description)}</description>
-          <link>${url}</link>
-          <guid>${url}</guid>
-          <pubDate>${new Date(post.date).toUTCString()}</pubDate>
-        </item>`;
-    })
-    .join('');
+    feed.addItem({
+      title: post.title,
+      id: url,
+      link: url,
+      description: post.description,
+      date: post.date,
+    });
+  }
 
-  const rss = `<?xml version="1.0" encoding="UTF-8" ?>
-    <rss version="2.0">
-      <channel>
-        <title>${escapeXml('insd blog')}</title>
-        <description>${escapeXml('MDX로 작성하는 개인 블로그입니다.')}</description>
-        <link>${origin}</link>
-        <language>ko</language>
-        ${items}
-      </channel>
-    </rss>`;
-
-  return new Response(rss, {
+  return new Response(feed.rss2(), {
     headers: {
       'Content-Type': 'application/rss+xml; charset=utf-8',
     },

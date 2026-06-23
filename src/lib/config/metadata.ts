@@ -6,22 +6,16 @@ export const url = process.env.VERCEL_PROJECT_PRODUCTION_URL
 
 export const base: Metadata = {
   metadataBase: url,
-  title: {
-    default: '황인성',
-    template: '%s | 황인성',
-  },
+  title: { default: '황인성', template: '%s | 황인성' },
   description: 'Junior Software Engineer',
   alternates: {
     canonical: '/',
-    types: {
-      'application/rss+xml': '/rss.xml',
-    },
+    types: { 'application/rss+xml': '/rss.xml' },
   },
   openGraph: {
     type: 'website',
     locale: 'ko_KR',
     siteName: '황인성',
-    title: '황인성 / INSUNG HWANG',
     description: 'Junior Software Engineer',
     images: '/og.png',
   },
