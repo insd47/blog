@@ -5,6 +5,8 @@ import posts from '@/lib/content/posts';
 import PostHeader from '@/app/posts/[slug]/_views/header';
 import PostAside from '@/app/posts/[slug]/_views/aside';
 import Separator from '@/components/separator';
+import HeaderSlot from '@/components/header/slot';
+import { StickyNoteIcon } from 'lucide-react';
 
 export default async function PostPage({ params }: PageProps<'/posts/[slug]'>) {
   const { slug } = await params;
@@ -16,7 +18,11 @@ export default async function PostPage({ params }: PageProps<'/posts/[slug]'>) {
 
   return (
     <main>
-      <article className="grid grid-cols-[minmax(0,1fr)_15rem] border-b">
+      <HeaderSlot className="flex items-center gap-2 text-[13px] font-mono">
+        <StickyNoteIcon className="size-3.5 fill-muted" /> {title}
+      </HeaderSlot>
+
+      <article className="grid md:grid-cols-[minmax(0,1fr)_15rem] border-b">
         <PostHeader className="col-span-full" date={date} tags={tags} title={title} />
         <Separator className="col-span-full" />
 

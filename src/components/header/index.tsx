@@ -3,6 +3,7 @@ import { cn } from '@/lib/utils/cn';
 import HeaderLogo from '@/components/header/logo';
 import HeaderNavigation from '@/components/header/navigation';
 import HeaderGithub from '@/components/header/github';
+import { HeaderSlotRoot } from '@/components/header/slot';
 
 export default function Header({ className, ...props }: ComponentProps<'header'>) {
   return (
@@ -16,6 +17,7 @@ export default function Header({ className, ...props }: ComponentProps<'header'>
     >
       <HeaderLogo />
       <HeaderNavigation />
+      <HeaderSlotRoot />
       <HeaderGithub />
     </header>
   );
