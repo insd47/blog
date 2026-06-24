@@ -34,7 +34,3 @@ export function Heading4({ className, ...props }: ComponentProps<'h3'>) {
     />
   );
 }
-
-export function Blockquote({ className, ...props }: ComponentProps<'blockquote'>) {
-  return <blockquote {...props} className={cn('border-l-2 border-accent pl-4', className)} />;
-}

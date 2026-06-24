@@ -1,11 +1,6 @@
 import type { MDXComponents } from 'mdx/types';
-import {
-  Blockquote,
-  Paragraph,
-  Heading2,
-  Heading3,
-  Heading4,
-} from '@/components/mdx/block';
+import { Paragraph, Heading2, Heading3, Heading4 } from '@/components/mdx/typography';
+import { Blockquote } from '@/components/mdx/blockquote';
 import { Code, Pre } from '@/components/mdx/code';
 import { OrderedList, UnorderedList } from '@/components/mdx/list';
 import Separator from '@/components/separator';
