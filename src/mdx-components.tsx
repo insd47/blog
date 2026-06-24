@@ -1,7 +1,13 @@
 import type { MDXComponents } from 'mdx/types';
-import { Blockquote, Paragraph, Heading2, Heading3, Heading4 } from '@/components/mdx/block';
+import {
+  Blockquote,
+  Paragraph,
+  Heading2,
+  Heading3,
+  Heading4,
+} from '@/components/markdown/nodes/block';
+import { OrderedList, UnorderedList } from '@/components/markdown/nodes/list';
 import Separator from '@/components/separator';
-import { OrderedList, UnorderedList } from '@/components/mdx/list';
 
 export const mdxComponents: MDXComponents = {
   p: Paragraph,

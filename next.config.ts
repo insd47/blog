@@ -8,6 +8,9 @@ const config: NextConfig = {
 
 const withMDX = createMDX({
   extension: /\.(md|mdx)$/,
+  options: {
+    rehypePlugins: ['rehype-slug'],
+  },
 });
 
 export default withMDX(config);

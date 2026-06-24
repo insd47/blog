@@ -12,19 +12,19 @@ export default async function PostPage({ params }: PageProps<'/posts/[slug]'>) {
 
   if (!post) notFound();
 
-  const { Content, ...metadata } = post;
+  const { title, tags, date, sections, Content } = post;
 
   return (
     <main>
       <article className="grid grid-cols-[minmax(0,1fr)_15rem] border-b">
-        <PostHeader className="col-span-full" {...metadata} />
+        <PostHeader className="col-span-full" date={date} tags={tags} title={title} />
         <Separator className="col-span-full" />
 
         <div className="*:px-6 *:mb-4 text-[15px] py-8 text-muted-foreground">
           <Content />
         </div>
 
-        <PostAside />
+        <PostAside sections={sections} />
       </article>
     </main>
   );

@@ -1,7 +1,13 @@
 import { readFile, readdir } from 'node:fs/promises';
 import type { ZodObject } from 'zod';
 import { ComponentType } from 'react';
+import { unified } from 'unified';
+import { visit } from 'unist-util-visit';
+import { toString } from 'mdast-util-to-string';
+import type { Heading, Root } from 'mdast';
 import nodePath from 'node:path';
+import remarkParse from 'remark-parse';
+import remarkMdx from 'remark-mdx';
 
 /**
  * 특정 경로의 모든 파일명을 반환합니다.
@@ -25,15 +31,21 @@ export async function importList(dir: string) {
 export async function importContent<T extends ZodObject>(path: string, scheme: T) {
   const target = nodePath.join(process.cwd(), 'src', path);
   const source = await readFile(target, 'utf8');
+  const tree = unified().use(remarkParse).use(remarkMdx).parse(source) as Root;
 
-  const title = source
-    .replace(/^\uFEFF/, '')
-    .split(/\r?\n/, 1)[0]
-    ?.match(/^#\s+(.*?)(?:\s+#+\s*)?$/)?.[1]
-    ?.trim();
+  let title: string | undefined;
+  const sections: string[] = [];
+
+  visit(tree, 'heading', (node: Heading) => {
+    const text = toString(node).trim();
+    if (!text) return;
+
+    if (node.depth === 1 && !title) title = text;
+    else if (node.depth === 2) sections.push(text);
+  });
 
   if (!title) {
-    throw new Error(`Expected first line to be a markdown title: ${path}`);
+    throw new Error(`Expected first markdown heading to be a level 1 title: ${path}`);
   }
 
   const { default: Content, metadata } = (await import('@/' + path)) as {
@@ -41,5 +53,5 @@ export async function importContent<T extends ZodObject>(path: string, scheme: T
     metadata: unknown;
   };
 
-  return { Content, title, ...scheme.parse(metadata) };
+  return { Content, title, sections, ...scheme.parse(metadata) };
 }
