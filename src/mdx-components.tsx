@@ -1,27 +1,20 @@
 import type { MDXComponents } from 'mdx/types';
-import { Heading1, Heading2, Heading3 } from '@/components/mdx/heading';
+import { Blockquote, Paragraph, Heading2, Heading3, Heading4 } from '@/components/mdx/block';
+import Separator from '@/components/separator';
 import { OrderedList, UnorderedList } from '@/components/mdx/list';
-import { Code } from '@/components/mdx/code';
-import {
-  Anchor,
-  Blockquote,
-  HorizontalRule,
-  Paragraph,
-  Pre,
-} from '@/components/mdx/base';
 
 export const mdxComponents: MDXComponents = {
-  a: Anchor,
-  blockquote: Blockquote,
-  h1: Heading1,
+  p: Paragraph,
+  h1: () => null,
   h2: Heading2,
   h3: Heading3,
-  hr: HorizontalRule,
+  h4: Heading4,
+  h5: Paragraph,
+  H6: Paragraph,
+  hr: Separator,
+  blockquote: Blockquote,
   ul: UnorderedList,
   ol: OrderedList,
-  p: Paragraph,
-  pre: Pre,
-  code: Code,
 };
 
 export function useMDXComponents(): MDXComponents {

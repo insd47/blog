@@ -1,7 +1,10 @@
 import { notFound } from 'next/navigation';
-import posts from '@/lib/content/posts';
 import { Metadata } from 'next';
 import { base } from '@/lib/config/metadata';
+import posts from '@/lib/content/posts';
+import PostHeader from '@/app/posts/[slug]/_views/header';
+import PostAside from '@/app/posts/[slug]/_views/aside';
+import Separator from '@/components/separator';
 
 export default async function PostPage({ params }: PageProps<'/posts/[slug]'>) {
   const { slug } = await params;
@@ -9,11 +12,20 @@ export default async function PostPage({ params }: PageProps<'/posts/[slug]'>) {
 
   if (!post) notFound();
 
-  const { Markdown, ...metadata } = post;
+  const { Content, ...metadata } = post;
 
   return (
     <main>
-      <Markdown />
+      <article className="grid grid-cols-[minmax(0,1fr)_15rem] border-b">
+        <PostHeader className="col-span-full" {...metadata} />
+        <Separator className="col-span-full" />
+
+        <div className="*:px-6 *:mb-4 text-[15px] py-8 text-muted-foreground">
+          <Content />
+        </div>
+
+        <PostAside />
+      </article>
     </main>
   );
 }

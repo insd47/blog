@@ -1,6 +1,6 @@
-import type { MetadataRoute } from 'next';
 import posts from '@/lib/content/posts';
 import config from '@/lib/config';
+import type { MetadataRoute } from 'next';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const url = config.metadata.url;

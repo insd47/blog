@@ -1,20 +1,32 @@
-import { ComponentProps } from 'react';
+'use client';
+
+import { createContext, use, type ComponentProps } from 'react';
 import { cn } from '@/lib/utils/cn';
 
-export function UnorderedList({ className, ...props }: ComponentProps<'ul'>) {
+const DepthContext = createContext(0);
+
+export function OrderedList({ className, children, ...props }: ComponentProps<'ol'>) {
+  const depth = use(DepthContext);
+  const styles = ['list-decimal', 'list-[lower-alpha]', 'list-[lower-roman]'];
+
   return (
-    <ul
-      className={cn('my-4 ml-6 list-disc [&>li]:not-last:mb-1', className)}
-      {...props}
-    />
+    <DepthContext value={depth + 1}>
+      <ol className={cn('ms-5', styles[depth % styles.length], className)} {...props}>
+        {children}
+      </ol>
+    </DepthContext>
   );
 }
 
-export function OrderedList({ className, ...props }: ComponentProps<'ol'>) {
+export function UnorderedList({ className, children, ...props }: ComponentProps<'ul'>) {
+  const depth = use(DepthContext);
+  const styles = ['list-disc', 'list-[circle]', 'list-[square]'];
+
   return (
-    <ol
-      className={cn('my-4 ml-6 list-decimal [&>li]:not-last:mb-1', className)}
-      {...props}
-    />
+    <DepthContext value={depth + 1}>
+      <ul className={cn('ms-5', styles[depth % styles.length], className)} {...props}>
+        {children}
+      </ul>
+    </DepthContext>
   );
 }

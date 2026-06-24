@@ -1,8 +1,8 @@
 const formatter = {
-  date: Intl.DateTimeFormat('ko-KR', {
+  date: Intl.DateTimeFormat('en-CA', {
     year: 'numeric',
-    month: 'long',
-    day: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
     timeZone: 'Asia/Seoul',
   }),
   time: Intl.DateTimeFormat('ko-KR', {
