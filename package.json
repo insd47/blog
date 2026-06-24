@@ -22,6 +22,7 @@
     "ogl": "^1.0.11",
     "react": "19.2.7",
     "react-dom": "19.2.7",
+    "rehype-mdx-code-props": "^3.0.1",
     "rehype-slug": "^6.0.0",
     "remark-mdx": "^3.1.1",
     "remark-parse": "^11.0.0",

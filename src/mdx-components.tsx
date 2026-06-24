@@ -5,8 +5,9 @@ import {
   Heading2,
   Heading3,
   Heading4,
-} from '@/components/markdown/nodes/block';
-import { OrderedList, UnorderedList } from '@/components/markdown/nodes/list';
+} from '@/components/mdx/block';
+import { Code, Pre } from '@/components/mdx/code';
+import { OrderedList, UnorderedList } from '@/components/mdx/list';
 import Separator from '@/components/separator';
 
 export const mdxComponents: MDXComponents = {
@@ -18,6 +19,8 @@ export const mdxComponents: MDXComponents = {
   h5: Paragraph,
   H6: Paragraph,
   hr: Separator,
+  pre: Pre,
+  code: Code,
   blockquote: Blockquote,
   ul: UnorderedList,
   ol: OrderedList,
