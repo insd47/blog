@@ -83,7 +83,6 @@ export function HeaderSlotPoint({ asChild = false, ref, ...props }: Props) {
  */
 export function HeaderSlotRoot({ className, ...props }: ComponentProps<'div'>) {
   const { slot, point, offset } = useHeaderState();
-
   if (!slot) return null;
 
   return (
@@ -92,7 +91,7 @@ export function HeaderSlotRoot({ className, ...props }: ComponentProps<'div'>) {
       className={cn(
         'pl-6 pr-15',
         'max-md:absolute max-md:left-16 max-md:right-0 max-md:top-1/2 max-md:-translate-y-1/2 transition-all',
-        point && offset <= point && 'opacity-0 pointer-events-none translate-y-6!',
+        (!point || offset <= point) && 'opacity-0 pointer-events-none translate-y-6!',
         className,
       )}
     >
