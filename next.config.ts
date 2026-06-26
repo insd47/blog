@@ -9,7 +9,12 @@ const config: NextConfig = {
 const withMDX = createMDX({
   extension: /\.(md|mdx)$/,
   options: {
-    rehypePlugins: ['rehype-slug', ['@shikijs/rehype', { theme: 'github-dark-dimmed' }]],
+    remarkPlugins: ['remark-gfm', 'remark-math'],
+    rehypePlugins: [
+      'rehype-katex',
+      'rehype-slug',
+      ['@shikijs/rehype', { theme: 'github-dark-dimmed' }],
+    ],
   },
 });
 

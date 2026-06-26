@@ -10,7 +10,7 @@ export function Heading2({ className, ...props }: ComponentProps<'h2'>) {
     <h2
       {...props}
       className={cn(
-        'mt-8 text-foreground font-bold scroll-m-20 pb-3 border-b text-xl leading-tight',
+        'mt-9 text-foreground font-bold scroll-m-20 pb-3 border-b text-xl leading-tight',
         className,
       )}
     />
