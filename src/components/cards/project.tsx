@@ -8,13 +8,15 @@ export default function ProjectCard({ code, title, stacks, className, image, ...
     <Link
       {...props}
       href={`/projects/${code}`}
-      className={cn('group flex not-last:border-b', className)}
+      className={cn(
+        'group flex not-last:border-b hover:bg-foreground/2 transition-colors',
+        className,
+      )}
     >
       <div
         className={cn(
           'flex flex-col max-md:justify-center',
           'text-xs md:text-sm font-mono md:w-80 max-md:flex-1 py-4.5 px-4 border-r',
-          'group-hover:bg-foreground/4 transition-colors',
         )}
       >
         <h3

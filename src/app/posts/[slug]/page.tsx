@@ -58,3 +58,9 @@ export async function generateMetadata({ params }: PageProps<'/posts/[slug]'>): 
     },
   };
 }
+
+export async function generateStaticParams() {
+  return posts.list().then((posts) => posts.map(({ slug }) => ({ slug })));
+}
+
+export const dynamicParams = false;
