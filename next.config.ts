@@ -9,7 +9,7 @@ const config: NextConfig = {
 const withMDX = createMDX({
   extension: /\.(md|mdx)$/,
   options: {
-    rehypePlugins: ['rehype-slug', 'rehype-mdx-code-props'],
+    rehypePlugins: ['rehype-slug', ['@shikijs/rehype', { theme: 'github-dark-dimmed' }]],
   },
 });
 

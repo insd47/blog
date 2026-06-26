@@ -8,13 +8,17 @@ const projects = {
 
     const items = await Promise.all(
       codes.map(async (code) => {
-        const [image, document, headings] = await Promise.all([
+        const [image, { stacks, date }, headings] = await Promise.all([
           importImage(`content/projects/${code}/banner.png`),
           importDocument(`content/projects/${code}/project.mdx`, scheme),
           importHeadings(`content/projects/${code}/project.mdx`),
         ]);
 
-        return { code, image, ...headings, ...document };
+        if (!image) {
+          throw new Error(`Image not found: content/projects/${code}/banner.png`);
+        }
+
+        return { code, image, stacks, date, ...headings };
       }),
     );
 

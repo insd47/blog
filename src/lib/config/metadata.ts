@@ -15,6 +15,7 @@ export const base: Metadata = {
   openGraph: {
     type: 'website',
     locale: 'ko_KR',
+    title: '황인성',
     siteName: '황인성',
     description: 'Junior Software Engineer',
     images: '/og.png',
@@ -26,3 +27,8 @@ export const base: Metadata = {
     ],
   },
 };
+
+export const basic = (title: string): Metadata => ({
+  title,
+  openGraph: { title, ...base.openGraph },
+});

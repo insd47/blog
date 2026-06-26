@@ -8,13 +8,13 @@ const posts = {
 
     const items = await Promise.all(
       slugs.map(async (slug) => {
-        const [image, document, headings] = await Promise.all([
+        const [image, { description, tags, date }, headings] = await Promise.all([
           importImage(`content/posts/${slug}/thumbnail.png`),
           importDocument(`content/posts/${slug}/post.mdx`, scheme),
           importHeadings(`content/posts/${slug}/post.mdx`),
         ]);
 
-        return { slug, image, ...headings, ...document };
+        return { slug, image, description, tags, date, ...headings };
       }),
     );
 
