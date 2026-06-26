@@ -9,7 +9,7 @@ export default function ProjectCard({ code, title, stacks, className, image, ...
       {...props}
       href={`/projects/${code}`}
       className={cn(
-        'group flex not-last:border-b hover:bg-foreground/2 transition-colors',
+        'group flex border-b hover:bg-foreground/2 transition-colors',
         className,
       )}
     >

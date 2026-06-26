@@ -17,7 +17,7 @@ export default async function Projects() {
       </header>
       <div>
         {filtered.map((project) => (
-          <ProjectCard key={project.code} {...project} />
+          <ProjectCard key={project.code} className="last:border-0" {...project} />
         ))}
       </div>
     </Section>

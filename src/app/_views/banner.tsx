@@ -1,19 +1,12 @@
 import { ComponentProps, Fragment } from 'react';
 import { cn } from '@/lib/utils/cn';
-import styles from './styles.module.css';
+import Banner from '@/components/banner';
 
 export default function BannerSection({ className, ...props }: ComponentProps<'section'>) {
   const stacks = ['Tauri', 'React', 'Unity', 'DevOps'];
 
   return (
-    <section
-      {...props}
-      className={cn(
-        'h-36 flex flex-center font-mono border-b select-none px-6',
-        styles.banner,
-        className,
-      )}
-    >
+    <Banner {...props} className={cn('flex flex-center px-6', className)}>
       <p className="text-foreground/60 *:text-foreground *:font-normal text-center text-pretty">
         <strong>황인성</strong> = (Software Engineer) ={'> '}
         {stacks.map((stack, index) => (
@@ -23,6 +16,6 @@ export default function BannerSection({ className, ...props }: ComponentProps<'s
           </Fragment>
         ))}
       </p>
-    </section>
+    </Banner>
   );
 }
