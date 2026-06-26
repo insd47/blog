@@ -49,7 +49,10 @@ export default function PostAside({ className, sections, ...props }: Props) {
   return (
     <aside
       {...props}
-      className={cn('border-l max-md:hidden font-mono text-[13px] text-muted-foreground/80', className)}
+      className={cn(
+        'border-l max-md:hidden font-mono text-[13px] text-muted-foreground/80',
+        className,
+      )}
     >
       <div className="p-4 sticky top-15">
         <h4 className="mb-3">Sections</h4>

@@ -1,5 +1,5 @@
 import { cache } from 'react';
-import { importImage, importList, importDocument, importHeadings } from '@/lib/utils/markdown';
+import { importImage, importList, importDocument, importHeadings } from '@/lib/utils/content';
 import { z } from 'zod';
 
 const posts = {
@@ -9,8 +9,8 @@ const posts = {
     const items = await Promise.all(
       slugs.map(async (slug) => {
         const [image, { description, tags, date }, headings] = await Promise.all([
-          importImage(`content/posts/${slug}/thumbnail.png`),
-          importDocument(`content/posts/${slug}/post.mdx`, scheme),
+          importImage(import(`@/content/posts/${slug}/thumbnail.png`)),
+          importDocument(import(`@/content/posts/${slug}/post.mdx`), scheme),
           importHeadings(`content/posts/${slug}/post.mdx`),
         ]);
 
@@ -23,7 +23,7 @@ const posts = {
 
   get: cache(async (slug: string) => {
     const [document, headings] = await Promise.all([
-      importDocument(`content/posts/${slug}/post.mdx`, scheme),
+      importDocument(import(`@/content/posts/${slug}/post.mdx`), scheme),
       importHeadings(`content/posts/${slug}/post.mdx`),
     ]);
 

@@ -1,5 +1,5 @@
 import { cache } from 'react';
-import { importList, importDocument, importImage, importHeadings } from '@/lib/utils/markdown';
+import { importList, importDocument, importImage, importHeadings } from '@/lib/utils/content';
 import { z } from 'zod';
 
 const projects = {
@@ -9,8 +9,8 @@ const projects = {
     const items = await Promise.all(
       codes.map(async (code) => {
         const [image, { stacks, date }, headings] = await Promise.all([
-          importImage(`content/projects/${code}/banner.png`),
-          importDocument(`content/projects/${code}/project.mdx`, scheme),
+          importImage(import(`@/content/projects/${code}/banner.png`)),
+          importDocument(import(`@/content/projects/${code}/project.mdx`), scheme),
           importHeadings(`content/projects/${code}/project.mdx`),
         ]);
 
@@ -27,7 +27,7 @@ const projects = {
 
   get: cache(async (code: string) => {
     const [document, headings] = await Promise.all([
-      importDocument(`content/projects/${code}/project.mdx`, scheme),
+      importDocument(import(`@/content/projects/${code}/project.mdx`), scheme),
       importHeadings(`content/projects/${code}/project.mdx`),
     ]);
 
