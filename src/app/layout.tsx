@@ -1,23 +1,40 @@
 import { Metadata } from 'next';
 import { PropsWithChildren } from 'react';
+import { HeaderProvider } from '@/components/header/context';
+import { JetBrains_Mono } from 'next/font/google';
 import Header from '@/components/header';
 import Footer from '@/components/footer';
 import Separator from '@/components/separator';
 import config from '@/lib/config';
 import './globals.css';
+import { cn } from '@/lib/utils/cn';
 
 export default function RootLayout({ children }: PropsWithChildren) {
   return (
-    <html lang="ko" className="dark">
-      <body>
-        <Header />
-        <Separator />
-        {children}
-        <Separator />
-        <Footer />
-      </body>
-    </html>
+    <HeaderProvider>
+      <html lang="ko" className={cn(mono.variable, display.variable)}>
+        <body>
+          <Header />
+          <Separator />
+          {children}
+          <Separator />
+          <Footer />
+        </body>
+      </html>
+    </HeaderProvider>
   );
 }
 
 export const metadata: Metadata = config.metadata.base;
+
+const mono = JetBrains_Mono({
+  variable: '--font-mono',
+  subsets: ['latin', 'latin-ext'],
+  fallback: ['ui-monospace', 'SFMono-Regular', 'Menlo', 'Monaco', 'Consolas', 'monospace'],
+});
+
+const display = JetBrains_Mono({
+  variable: '--font-display',
+  subsets: ['latin', 'latin-ext'],
+  fallback: ['Pretendard Variable', 'Pretendard', 'monospace'],
+});

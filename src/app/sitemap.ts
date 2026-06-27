@@ -1,20 +1,27 @@
-import type { MetadataRoute } from 'next';
-import posts from '@/lib/content/posts';
 import config from '@/lib/config';
+import { getPostList } from '@/lib/content/posts';
+import type { MetadataRoute } from 'next';
+import { getProjectList } from '@/lib/content/projects';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const url = config.metadata.url;
   const lastModified = new Date();
   const pages = ['', '/posts', '/projects'];
-  const allPosts = await posts.list();
+
+  const posts = await getPostList();
+  const projects = await getProjectList();
 
   return [
     ...pages.map((page) => ({
       url: url + page,
       lastModified,
     })),
-    ...allPosts.map(({ slug, date }) => ({
+    ...posts.map(({ slug, date }) => ({
       url: `${url}/posts/${slug}`,
+      lastModified: date,
+    })),
+    ...projects.map(({ code, date }) => ({
+      url: `${url}/projects/${code}`,
       lastModified: date,
     })),
   ];

@@ -1,6 +1,5 @@
 import * as metadata from './metadata';
-import projects from './projects';
 
-const config = { metadata, projects };
+const config = { metadata };
 
 export default config;

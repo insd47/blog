@@ -1,10 +1,10 @@
 import Section from '@/app/_views/section';
 import ProjectCard from '@/components/cards/project';
 import Link from 'next/link';
-import config from '@/lib/config';
+import { getProjectList } from '@/lib/content/projects';
 
-export default function Projects() {
-  const entries = Object.entries(config.projects).slice(0, 2);
+export default async function ProjectSection() {
+  const projects = await getProjectList();
 
   return (
     <Section>
@@ -14,11 +14,16 @@ export default function Projects() {
           <p className="no-underline! text-foreground/60">={'>'}</p>
         </Link>
       </header>
-      <div>
-        {entries.map(([id, project]) => (
-          <ProjectCard key={id} id={id} {...project} />
-        ))}
-      </div>
+      {projects.slice(0, 2).map(({ code, title, stacks, image }) => (
+        <ProjectCard
+          key={code}
+          className="last:border-0"
+          code={code}
+          title={title}
+          stacks={stacks}
+          image={image}
+        />
+      ))}
     </Section>
   );
 }

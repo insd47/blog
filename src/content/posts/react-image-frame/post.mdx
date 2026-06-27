@@ -1,0 +1,17 @@
+import Image from 'next/image';
+import thumbnail from './thumbnail.png';
+
+# React와 Next.js에서 이미지에 로딩 인디케이터 표시하기
+
+export const metadata = {
+  description: '',
+  tags: ['MDX', 'Next.js', 'React'],
+  published: '2026-06-26',
+}
+
+<figure>
+  <Image src={thumbnail} alt="thumbnail" width={960} height={640} />
+  <figcaption>
+    Photo by [James Wiseman](https://unsplash.com/@jameswiseman) on [Unsplash](https://unsplash.com)
+  </figcaption>
+</figure>
