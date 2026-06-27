@@ -6,7 +6,7 @@ import Separator from '@/components/separator';
 import Banner from '@/components/banner';
 
 export default async function ProjectsPage() {
-  const list = await getProjectList();
+  const projects = await getProjectList();
 
   return (
     <main>
@@ -18,7 +18,7 @@ export default async function ProjectsPage() {
 
       <Separator />
 
-      {list.map(({ code, title, stacks, image }) => (
+      {projects.map(({ code, title, stacks, image }) => (
         <ProjectCard key={code} code={code} title={title} stacks={stacks} image={image} />
       ))}
     </main>

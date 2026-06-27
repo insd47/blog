@@ -12,6 +12,10 @@ export async function getPostList() {
         importHeadings(`content/posts/${slug}/post.mdx`),
       ]);
 
+      if (!image) {
+        throw new Error(`Image not found: content/posts/${slug}/thumbnail.png`);
+      }
+
       return { slug, image, ...metadata, ...headings };
     }),
   );

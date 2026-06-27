@@ -3,7 +3,7 @@ import ProjectCard from '@/components/cards/project';
 import Link from 'next/link';
 import { getProjectList } from '@/lib/content/projects';
 
-export default async function Projects() {
+export default async function ProjectSection() {
   const projects = await getProjectList();
 
   return (
@@ -14,18 +14,16 @@ export default async function Projects() {
           <p className="no-underline! text-foreground/60">={'>'}</p>
         </Link>
       </header>
-      <div>
-        {projects.slice(0, 3).map(({ code, title, stacks, image }) => (
-          <ProjectCard
-            key={code}
-            className="last:border-0"
-            code={code}
-            title={title}
-            stacks={stacks}
-            image={image}
-          />
-        ))}
-      </div>
+      {projects.slice(0, 2).map(({ code, title, stacks, image }) => (
+        <ProjectCard
+          key={code}
+          className="last:border-0"
+          code={code}
+          title={title}
+          stacks={stacks}
+          image={image}
+        />
+      ))}
     </Section>
   );
 }

@@ -21,7 +21,7 @@ export default function ProjectCard({ code, title, stacks, className, image, ...
       >
         <h3
           className={cn(
-            'mb-1.5 text-sm md:text-lg',
+            'mb-1.5 text-sm md:text-lg transition-all',
             'underline underline-offset-4 decoration-transparent group-hover:decoration-foreground/30',
           )}
         >
