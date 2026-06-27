@@ -7,12 +7,12 @@ export default async function ProjectPage({ params }: PageProps<'/projects/[code
 
   if (!project) notFound();
 
-  const { title, createdAt, Content } = project;
+  const { title, published, Content } = project;
 
   return (
     <main>
       <h1>{title}</h1>
-      <time dateTime={createdAt.toISOString()}>{createdAt.toLocaleDateString()}</time>
+      <time dateTime={published.toISOString()}>{published.toLocaleDateString()}</time>
       <Content />
     </main>
   );

@@ -1,5 +1,5 @@
 import { readFile, readdir } from 'node:fs/promises';
-import type { ZodObject } from 'zod';
+import type { z } from 'zod';
 import type { ComponentType } from 'react';
 import { unified } from 'unified';
 import { visit } from 'unist-util-visit';
@@ -56,7 +56,10 @@ export async function importHeadings(path: string) {
  * @param module 마크다운 모듈. mdx 파일에 대한 동적 import를 전달해야 합니다.
  * @param scheme `metadata`에 대한 스키마
  */
-export async function importDocument<T extends ZodObject>(module: Promise<unknown>, scheme: T) {
+export async function importDocument<T extends z.ZodType>(
+  module: Promise<unknown>,
+  scheme: T,
+): Promise<{ Content: ComponentType; metadata: z.output<T> }> {
   const { default: Content, metadata } = (await module) as {
     default: ComponentType;
     metadata: unknown;

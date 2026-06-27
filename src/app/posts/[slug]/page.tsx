@@ -14,7 +14,7 @@ export default async function PostPage({ params }: PageProps<'/posts/[slug]'>) {
 
   if (!post) notFound();
 
-  const { title, tags, createdAt, sections, Content } = post;
+  const { title, tags, published, sections, Content } = post;
 
   return (
     <main>
@@ -23,7 +23,7 @@ export default async function PostPage({ params }: PageProps<'/posts/[slug]'>) {
       </HeaderSlot>
 
       <article className="grid md:grid-cols-[minmax(0,1fr)_15rem] border-b">
-        <PostHeader className="col-span-full" createdAt={createdAt} tags={tags} title={title} />
+        <PostHeader className="col-span-full" published={published} tags={tags} title={title} />
         <Separator className="col-span-full" />
 
         <div className="*:px-6 *:mb-5 text-[15px] py-8 text-muted-foreground">
@@ -38,7 +38,7 @@ export default async function PostPage({ params }: PageProps<'/posts/[slug]'>) {
 
 export async function generateMetadata({ params }: PageProps<'/posts/[slug]'>): Promise<Metadata> {
   const { slug } = await params;
-  const { title, description, createdAt, updatedAt } = await getPost(slug);
+  const { title, description, published, date } = await getPost(slug);
 
   return {
     title,
@@ -53,8 +53,8 @@ export async function generateMetadata({ params }: PageProps<'/posts/[slug]'>): 
       title,
       description,
       url: `/posts/${slug}`,
-      publishedTime: createdAt.toISOString(),
-      modifiedTime: updatedAt?.toISOString(),
+      publishedTime: published.toISOString(),
+      modifiedTime: date.toISOString(),
       authors: ['황인성'],
     },
   };

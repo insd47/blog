@@ -21,8 +21,8 @@ export async function getProjectList() {
   );
 
   return items.sort((a, b) => {
-    const x = a.updatedAt ?? a.createdAt;
-    const y = b.updatedAt ?? b.createdAt;
+    const x = a.date;
+    const y = b.date;
 
     return y.getTime() - x.getTime();
   });
@@ -37,8 +37,14 @@ export async function getProject(code: string) {
   return { ...headings, ...metadata, Content };
 }
 
-const scheme = z.object({
-  stacks: z.array(z.string()),
-  createdAt: z.date(),
-  updatedAt: z.date().optional(),
-});
+const scheme = z
+  .object({
+    stacks: z.array(z.string()),
+    published: z.string().pipe(z.coerce.date()),
+    date: z.string().pipe(z.coerce.date()).optional(),
+  })
+  .transform(({ published, date, ...metadata }) => ({
+    ...metadata,
+    published,
+    date: date ?? published,
+  }));

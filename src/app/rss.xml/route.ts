@@ -13,14 +13,13 @@ export async function GET() {
   });
 
   for (const post of await getPostList()) {
-    const url = `${config.metadata.url}/posts/${post.slug}`;
-
     feed.addItem({
+      link: `${config.metadata.url}/posts/${post.slug}`,
+      id: post.slug,
       title: post.title,
-      id: url,
-      link: url,
       description: post.description,
-      publishedAt: post.date,
+      date: post.date,
+      published: post.published,
     });
   }
 

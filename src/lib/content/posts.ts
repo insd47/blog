@@ -17,8 +17,8 @@ export async function getPostList() {
   );
 
   return items.sort((a, b) => {
-    const x = a.createdAt;
-    const y = b.createdAt;
+    const x = a.published;
+    const y = b.published;
 
     return y.getTime() - x.getTime();
   });
@@ -33,9 +33,15 @@ export async function getPost(slug: string) {
   return { ...headings, ...metadata, Content };
 }
 
-const scheme = z.object({
-  description: z.string(),
-  tags: z.array(z.string()),
-  createdAt: z.date(),
-  updatedAt: z.date().optional(),
-});
+const scheme = z
+  .object({
+    description: z.string(),
+    tags: z.array(z.string()),
+    published: z.string().pipe(z.coerce.date()),
+    date: z.string().pipe(z.coerce.date()).optional(),
+  })
+  .transform(({ published, date, ...metadata }) => ({
+    ...metadata,
+    published,
+    date: date ?? published,
+  }));
