@@ -19,8 +19,8 @@ export default function PostMetadata({ tags, published, className, ...props }: P
       <dd>
         {tags.map((tag, i) => (
           <Fragment key={tag}>
-            {i > 0 && <i className="text-muted-foreground/30"> · </i>}
-            <span className="">{tag}</span>
+            {i > 0 && <i className="text-muted-foreground/40 pr-0.5 mx-0.5">·</i>}
+            <span className="text-center">{tag}</span>
           </Fragment>
         ))}
       </dd>

@@ -29,10 +29,12 @@ export const metadata: Metadata = config.metadata.base;
 
 const mono = JetBrains_Mono({
   variable: '--font-mono',
+  subsets: ['latin', 'latin-ext'],
   fallback: ['ui-monospace', 'SFMono-Regular', 'Menlo', 'Monaco', 'Consolas', 'monospace'],
 });
 
 const display = JetBrains_Mono({
   variable: '--font-display',
+  subsets: ['latin', 'latin-ext'],
   fallback: ['Pretendard Variable', 'Pretendard', 'monospace'],
 });
