@@ -22,11 +22,11 @@ export default async function PostPage({ params }: PageProps<'/posts/[slug]'>) {
         <StickyNoteIcon className="size-3.5 fill-muted" /> {title}
       </HeaderSlot>
 
-      <article className="grid md:grid-cols-[minmax(0,1fr)_15rem] border-b">
+      <article className="grid md:grid-cols-[minmax(0,1fr)_15rem] border-b break-keep">
         <PostHeader className="col-span-full" published={published} tags={tags} title={title} />
         <Separator className="col-span-full" />
 
-        <div className="*:px-6 *:mb-5 text-[15px] py-8 text-muted-foreground">
+        <div className="*:px-6 *:mb-5 pb-8 text-[15px] text-muted-foreground">
           <Content />
         </div>
 

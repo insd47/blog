@@ -22,7 +22,7 @@ export default function PostAside({ className, sections, ...props }: Props) {
       const e = document.getElementById(id);
       if (!e) continue;
 
-      const offset = Number.parseFloat(getComputedStyle(e).scrollMarginTop);
+      const offset = Number.parseFloat(getComputedStyle(e).scrollMarginTop) + 1;
       const top = e.getBoundingClientRect().top;
 
       if (top <= offset) current = id;
