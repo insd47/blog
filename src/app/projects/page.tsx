@@ -1,12 +1,12 @@
 import type { Metadata } from 'next';
 import config from '@/lib/config';
-import projects from '@/lib/content/projects';
+import { getProjectList } from '@/lib/content/projects';
 import ProjectCard from '@/components/cards/project';
 import Separator from '@/components/separator';
 import Banner from '@/components/banner';
 
 export default async function ProjectsPage() {
-  const list = await projects.list();
+  const list = await getProjectList();
 
   return (
     <main>
@@ -18,8 +18,8 @@ export default async function ProjectsPage() {
 
       <Separator />
 
-      {list.map((project) => (
-        <ProjectCard key={project.code} {...project} />
+      {list.map(({ code, title, stacks, image }) => (
+        <ProjectCard key={code} code={code} title={title} stacks={stacks} image={image} />
       ))}
     </main>
   );

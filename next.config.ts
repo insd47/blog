@@ -13,7 +13,7 @@ const withMDX = createMDX({
     rehypePlugins: [
       'rehype-katex',
       'rehype-slug',
-      ['@shikijs/rehype', { theme: 'github-dark-dimmed' }],
+      ['@shikijs/rehype', { theme: 'github-dark-dimmed', rootStyle: false }],
     ],
   },
 });

@@ -16,7 +16,7 @@ export default function PostAside({ className, sections, ...props }: Props) {
   );
 
   useScrollFrame(() => {
-    let [current] = slugs[0];
+    let [current] = slugs[0] ?? [''];
 
     for (const [id] of slugs) {
       const e = document.getElementById(id);

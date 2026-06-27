@@ -1,11 +1,10 @@
 import Section from '@/app/_views/section';
 import ProjectCard from '@/components/cards/project';
 import Link from 'next/link';
-import projects from '@/lib/content/projects';
+import { getProjectList } from '@/lib/content/projects';
 
 export default async function Projects() {
-  const list = await projects.list();
-  const filtered = list.filter(({ code }) => ['kc', 'rv'].includes(code));
+  const projects = await getProjectList();
 
   return (
     <Section>
@@ -16,8 +15,15 @@ export default async function Projects() {
         </Link>
       </header>
       <div>
-        {filtered.map((project) => (
-          <ProjectCard key={project.code} className="last:border-0" {...project} />
+        {projects.slice(0, 3).map(({ code, title, stacks, image }) => (
+          <ProjectCard
+            key={code}
+            className="last:border-0"
+            code={code}
+            title={title}
+            stacks={stacks}
+            image={image}
+          />
         ))}
       </div>
     </Section>

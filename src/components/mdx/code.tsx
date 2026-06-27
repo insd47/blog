@@ -6,7 +6,7 @@ export function Pre({ className, ...props }: ComponentProps<'pre'>) {
     <pre
       {...props}
       className={cn(
-        'overflow-x-auto p-6 border-y bg-foreground/2!',
+        'overflow-x-auto p-6 border-y bg-foreground/2',
         '*:text-[13px] *:bg-transparent *:p-0',
         className,
       )}

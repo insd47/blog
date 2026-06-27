@@ -4,7 +4,7 @@ import { ClockIcon, TagIcon } from 'lucide-react';
 import formatter from '@/lib/utils/formatter';
 import { HeaderSlotPoint } from '@/components/header/slot';
 
-export default function PostHeader({ className, title, tags, date, ...props }: Props) {
+export default function PostHeader({ className, title, tags, createdAt, ...props }: Props) {
   return (
     <HeaderSlotPoint asChild>
       <header {...props} className={cn('border-b px-6 py-7.5 font-mono', className)}>
@@ -32,7 +32,7 @@ export default function PostHeader({ className, title, tags, date, ...props }: P
             <ClockIcon /> <span className="sr-only">Published</span>
           </dt>
           <dd>
-            <time dateTime={date.toISOString()}>{formatter.date.format(date)}</time>
+            <time dateTime={createdAt.toISOString()}>{formatter.date.format(createdAt)}</time>
           </dd>
         </dl>
       </header>
@@ -43,5 +43,5 @@ export default function PostHeader({ className, title, tags, date, ...props }: P
 interface Props extends ComponentProps<'header'> {
   title: string;
   tags: string[];
-  date: Date;
+  createdAt: Date;
 }

@@ -1,5 +1,5 @@
-import posts from '@/lib/content/posts';
 import config from '@/lib/config';
+import { getPostList } from '@/lib/content/posts';
 import { Feed } from 'feed';
 
 export async function GET() {
@@ -12,7 +12,7 @@ export async function GET() {
     feed: config.metadata.url + '/rss.xml',
   });
 
-  for (const post of await posts.list()) {
+  for (const post of await getPostList()) {
     const url = `${config.metadata.url}/posts/${post.slug}`;
 
     feed.addItem({
@@ -20,7 +20,7 @@ export async function GET() {
       id: url,
       link: url,
       description: post.description,
-      date: post.date,
+      publishedAt: post.date,
     });
   }
 

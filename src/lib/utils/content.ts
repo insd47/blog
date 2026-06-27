@@ -62,7 +62,7 @@ export async function importDocument<T extends ZodObject>(module: Promise<unknow
     metadata: unknown;
   };
 
-  return { Content, ...scheme.parse(metadata) };
+  return { Content, metadata: scheme.parse(metadata) };
 }
 
 /**

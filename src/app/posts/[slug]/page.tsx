@@ -1,20 +1,20 @@
 import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
 import { base } from '@/lib/config/metadata';
-import posts from '@/lib/content/posts';
 import PostHeader from '@/app/posts/[slug]/_views/header';
 import PostAside from '@/app/posts/[slug]/_views/aside';
 import Separator from '@/components/separator';
 import HeaderSlot from '@/components/header/slot';
 import { StickyNoteIcon } from 'lucide-react';
+import { getPost, getPostList } from '@/lib/content/posts';
 
 export default async function PostPage({ params }: PageProps<'/posts/[slug]'>) {
   const { slug } = await params;
-  const post = await posts.get(slug).catch(() => null);
+  const post = await getPost(slug).catch(() => null);
 
   if (!post) notFound();
 
-  const { title, tags, date, sections, Content } = post;
+  const { title, tags, createdAt, sections, Content } = post;
 
   return (
     <main>
@@ -23,7 +23,7 @@ export default async function PostPage({ params }: PageProps<'/posts/[slug]'>) {
       </HeaderSlot>
 
       <article className="grid md:grid-cols-[minmax(0,1fr)_15rem] border-b">
-        <PostHeader className="col-span-full" date={date} tags={tags} title={title} />
+        <PostHeader className="col-span-full" createdAt={createdAt} tags={tags} title={title} />
         <Separator className="col-span-full" />
 
         <div className="*:px-6 *:mb-5 text-[15px] py-8 text-muted-foreground">
@@ -38,7 +38,7 @@ export default async function PostPage({ params }: PageProps<'/posts/[slug]'>) {
 
 export async function generateMetadata({ params }: PageProps<'/posts/[slug]'>): Promise<Metadata> {
   const { slug } = await params;
-  const { title, description, date } = await posts.get(slug);
+  const { title, description, createdAt, updatedAt } = await getPost(slug);
 
   return {
     title,
@@ -53,14 +53,15 @@ export async function generateMetadata({ params }: PageProps<'/posts/[slug]'>): 
       title,
       description,
       url: `/posts/${slug}`,
-      publishedTime: date.toISOString(),
+      publishedTime: createdAt.toISOString(),
+      modifiedTime: updatedAt?.toISOString(),
       authors: ['황인성'],
     },
   };
 }
 
 export async function generateStaticParams() {
-  return posts.list().then((posts) => posts.map(({ slug }) => ({ slug })));
+  return getPostList().then((posts) => posts.map(({ slug }) => ({ slug })));
 }
 
 export const dynamicParams = false;

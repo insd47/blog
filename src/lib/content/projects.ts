@@ -1,43 +1,44 @@
-import { cache } from 'react';
 import { importList, importDocument, importImage, importHeadings } from '@/lib/utils/content';
 import { z } from 'zod';
 
-const projects = {
-  list: cache(async () => {
-    const codes = await importList('content/projects');
+export async function getProjectList() {
+  const codes = await importList('content/projects');
 
-    const items = await Promise.all(
-      codes.map(async (code) => {
-        const [image, { stacks, date }, headings] = await Promise.all([
-          importImage(import(`@/content/projects/${code}/banner.png`)),
-          importDocument(import(`@/content/projects/${code}/project.mdx`), scheme),
-          importHeadings(`content/projects/${code}/project.mdx`),
-        ]);
+  const items = await Promise.all(
+    codes.map(async (code) => {
+      const [image, { metadata }, headings] = await Promise.all([
+        importImage(import(`@/content/projects/${code}/banner.png`)),
+        importDocument(import(`@/content/projects/${code}/project.mdx`), scheme),
+        importHeadings(`content/projects/${code}/project.mdx`),
+      ]);
 
-        if (!image) {
-          throw new Error(`Image not found: content/projects/${code}/banner.png`);
-        }
+      if (!image) {
+        throw new Error(`Image not found: content/projects/${code}/banner.png`);
+      }
 
-        return { code, image, stacks, date, ...headings };
-      }),
-    );
+      return { code, image, ...metadata, ...headings };
+    }),
+  );
 
-    return items.sort((a, b) => b.date.getTime() - a.date.getTime());
-  }),
+  return items.sort((a, b) => {
+    const x = a.updatedAt ?? a.createdAt;
+    const y = b.updatedAt ?? b.createdAt;
 
-  get: cache(async (code: string) => {
-    const [document, headings] = await Promise.all([
-      importDocument(import(`@/content/projects/${code}/project.mdx`), scheme),
-      importHeadings(`content/projects/${code}/project.mdx`),
-    ]);
+    return y.getTime() - x.getTime();
+  });
+}
 
-    return { ...headings, ...document };
-  }),
-};
+export async function getProject(code: string) {
+  const [{ Content, metadata }, headings] = await Promise.all([
+    importDocument(import(`@/content/projects/${code}/project.mdx`), scheme),
+    importHeadings(`content/projects/${code}/project.mdx`),
+  ]);
+
+  return { ...headings, ...metadata, Content };
+}
 
 const scheme = z.object({
   stacks: z.array(z.string()),
-  date: z.date(),
+  createdAt: z.date(),
+  updatedAt: z.date().optional(),
 });
-
-export default projects;
