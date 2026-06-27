@@ -18,7 +18,7 @@ export default async function PostPage({ params }: PageProps<'/posts/[slug]'>) {
 
   return (
     <main>
-      <HeaderSlot className="flex items-center gap-2 text-[13px] font-mono">
+      <HeaderSlot className="flex items-center gap-2 text-[13px] font-display">
         <StickyNoteIcon className="size-3.5 fill-muted" /> {title}
       </HeaderSlot>
 

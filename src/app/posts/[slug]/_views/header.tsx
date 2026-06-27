@@ -7,7 +7,7 @@ import { HeaderSlotPoint } from '@/components/header/slot';
 export default function PostHeader({ className, title, tags, published, ...props }: Props) {
   return (
     <HeaderSlotPoint asChild>
-      <header {...props} className={cn('border-b px-6 py-7.5 font-mono', className)}>
+      <header {...props} className={cn('border-b px-6 py-7.5 font-display', className)}>
         <h1 className="text-2xl font-bold mb-3">{title}</h1>
 
         <dl

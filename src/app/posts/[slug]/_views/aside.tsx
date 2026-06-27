@@ -50,7 +50,7 @@ export default function PostAside({ className, sections, ...props }: Props) {
     <aside
       {...props}
       className={cn(
-        'border-l max-md:hidden font-mono text-[13px] text-muted-foreground/80',
+        'border-l max-md:hidden font-display text-[13px] text-muted-foreground/80',
         className,
       )}
     >

@@ -21,7 +21,7 @@ export function Heading3({ className, ...props }: ComponentProps<'h3'>) {
   return (
     <h3
       {...props}
-      className={cn('mt-6 text-foreground font-bold scroll-m-20 text-lg', className)}
+      className={cn('mt-6 text-foreground font-bold scroll-m-20 text-base', className)}
     />
   );
 }
@@ -30,7 +30,7 @@ export function Heading4({ className, ...props }: ComponentProps<'h3'>) {
   return (
     <h4
       {...props}
-      className={cn('mt-6 text-foreground font-bold scroll-m-20 text-lg', className)}
+      className={cn('mt-6 text-foreground font-bold scroll-m-20 text-base', className)}
     />
   );
 }

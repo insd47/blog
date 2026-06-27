@@ -7,7 +7,7 @@ export default function Section({ className, ...props }: ComponentProps<'section
       {...props}
       className={cn(
         'border-b',
-        '[&>header]:text-[13px] [&>header]:font-mono [&>header]:h-10',
+        '[&>header]:text-[13px] [&>header]:font-display [&>header]:h-10',
         '[&>header]:text-foreground/60 [&>header]:bg-foreground/3 [&>header]:border-b',
         '[&>header>a]:hover:text-foreground [&>header>a]:transition-colors',
         '[&>header>a]:*:underline [&>header>a]:*:underline-offset-4',

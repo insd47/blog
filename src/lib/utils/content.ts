@@ -18,10 +18,7 @@ export async function importList(dir: string) {
   const directory = nodePath.join(process.cwd(), 'src', dir);
   const entries = await readdir(directory, { withFileTypes: true });
 
-  return entries
-    .filter((entry) => entry.isDirectory())
-    .map((entry) => entry.name)
-    .sort((a, b) => a.localeCompare(b));
+  return entries.filter((entry) => entry.isDirectory()).map((entry) => entry.name);
 }
 
 /**

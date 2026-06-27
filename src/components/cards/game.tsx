@@ -18,7 +18,7 @@ export default function GameCard({
   return (
     <div
       {...props}
-      className={cn('relative flex flex-col p-5 font-mono', className)}
+      className={cn('relative flex flex-col p-5 font-display', className)}
       style={{ color: colors[0], ...style }}
     >
       <Grainient

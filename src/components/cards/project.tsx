@@ -16,7 +16,7 @@ export default function ProjectCard({ code, title, stacks, className, image, ...
       <div
         className={cn(
           'flex flex-col max-md:justify-center',
-          'text-xs md:text-sm font-mono md:w-80 max-md:flex-1 py-4.5 px-4 border-r',
+          'text-xs md:text-sm font-display md:w-80 max-md:flex-1 py-4.5 px-4 border-r',
         )}
       >
         <h3

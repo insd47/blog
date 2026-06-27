@@ -1,16 +1,18 @@
 import { Metadata } from 'next';
 import { PropsWithChildren } from 'react';
+import { HeaderProvider } from '@/components/header/context';
+import { JetBrains_Mono } from 'next/font/google';
 import Header from '@/components/header';
 import Footer from '@/components/footer';
 import Separator from '@/components/separator';
 import config from '@/lib/config';
-import { HeaderProvider } from '@/components/header/context';
 import './globals.css';
+import { cn } from '@/lib/utils/cn';
 
 export default function RootLayout({ children }: PropsWithChildren) {
   return (
     <HeaderProvider>
-      <html lang="ko" className="dark">
+      <html lang="ko" className={cn(mono.variable, display.variable)}>
         <body>
           <Header />
           <Separator />
@@ -24,3 +26,13 @@ export default function RootLayout({ children }: PropsWithChildren) {
 }
 
 export const metadata: Metadata = config.metadata.base;
+
+const mono = JetBrains_Mono({
+  variable: '--font-mono',
+  fallback: ['ui-monospace', 'SFMono-Regular', 'Menlo', 'Monaco', 'Consolas', 'monospace'],
+});
+
+const display = JetBrains_Mono({
+  variable: '--font-display',
+  fallback: ['Pretendard Variable', 'Pretendard', 'monospace'],
+});

@@ -14,7 +14,7 @@ export default function HeaderNavigation({ className, ...props }: ComponentProps
       {...props}
       className={cn(
         'px-6 gap-6 flex items-center text-[13px]',
-        'font-mono md:border-r md:bg-foreground/3',
+        'font-display md:border-r md:bg-foreground/3',
         '*:text-foreground/60 *:hover:text-foreground *:transition-all',
         point &&
           offset > point &&
