@@ -37,7 +37,7 @@ export default function GameCard({
         {icon} <span className="max-sm:hidden">{title}</span>
       </div>
 
-      <p className="md:text-3xl mb-3 text-foreground">{name}</p>
+      <p className="md:text-2xl mb-3 text-foreground">{name}</p>
 
       <div className="relative h-0.5 bg-foreground/30 mb-2.5">
         <div
