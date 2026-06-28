@@ -19,7 +19,8 @@ export default async function PostPage({ params }: PageProps<'/posts/[slug]'>) {
   return (
     <main>
       <HeaderSlot className="flex items-center gap-2 text-[13px] font-display">
-        <StickyNoteIcon className="size-3.5 fill-muted" /> {title}
+        <StickyNoteIcon className="size-3.5 fill-muted shrink-0" />
+        <p className="truncate">{title}</p>
       </HeaderSlot>
 
       <article className="grid grid-cols-1 md:grid-cols-[minmax(0,1fr)_15rem] border-b break-keep">
