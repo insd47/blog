@@ -8,7 +8,7 @@ export default function PostCard({
   slug,
   tags,
   title,
-  image,
+  thumbnail,
   published,
   className,
   ...props
@@ -17,17 +17,12 @@ export default function PostCard({
     <Link
       {...props}
       href={`/posts/${slug}`}
-      className={cn(
-        'group flex border-b hover:bg-foreground/2 transition-colors',
-        className,
-      )}
+      className={cn('group flex border-b hover:bg-foreground/2 transition-colors', className)}
     >
       <Image
         className="size-32.5 border-r md:w-50 object-cover overflow-hidden shrink-0"
-        src={image}
+        src={thumbnail}
         alt={title}
-        width={200}
-        height={130}
       />
 
       <div className="flex flex-1 flex-col font-display p-4.5 justify-center">
@@ -51,5 +46,5 @@ interface Props extends ComponentProps<'a'> {
   title: string;
   tags: string[];
   published: Date;
-  image: StaticImageData;
+  thumbnail: StaticImageData;
 }

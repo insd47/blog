@@ -19,7 +19,7 @@ export default async function ProjectsPage() {
       <Separator />
 
       {projects.map(({ code, title, stacks, image }) => (
-        <ProjectCard key={code} code={code} title={title} stacks={stacks} image={image} />
+        <ProjectCard key={code} code={code} title={title} stacks={stacks} banner={image} />
       ))}
     </main>
   );

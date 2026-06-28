@@ -3,15 +3,12 @@ import Image, { StaticImageData } from 'next/image';
 import { cn } from '@/lib/utils/cn';
 import Link from 'next/link';
 
-export default function ProjectCard({ code, title, stacks, className, image, ...props }: Props) {
+export default function ProjectCard({ code, title, stacks, className, banner, ...props }: Props) {
   return (
     <Link
       {...props}
       href={`/projects/${code}`}
-      className={cn(
-        'group flex border-b hover:bg-foreground/2 transition-colors',
-        className,
-      )}
+      className={cn('group flex border-b hover:bg-foreground/2 transition-colors', className)}
     >
       <div
         className={cn(
@@ -39,10 +36,8 @@ export default function ProjectCard({ code, title, stacks, className, image, ...
 
       <Image
         className="flex-1 min-w-22.5 h-22.5 md:h-55 object-cover overflow-hidden"
-        src={image}
+        src={banner}
         alt={title}
-        width={640}
-        height={220}
       />
     </Link>
   );
@@ -52,5 +47,5 @@ interface Props extends ComponentProps<'a'> {
   code: string;
   title: string;
   stacks: string[];
-  image: StaticImageData;
+  banner: StaticImageData;
 }

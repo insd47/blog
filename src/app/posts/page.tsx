@@ -24,7 +24,7 @@ export default async function PostsPage() {
           slug={slug}
           title={title}
           tags={tags}
-          image={image}
+          thumbnail={image}
           published={published}
         />
       ))}
