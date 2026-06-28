@@ -21,11 +21,11 @@ export default function GameCard({
   return (
     <div
       {...props}
-      className={cn('relative flex flex-col p-5 font-display', className)}
+      className={cn('relative flex flex-col p-5 font-display overflow-hidden border-r', className)}
       style={{ color: colors[0], ...style }}
     >
       <Grainient
-        className="absolute inset-0 -z-1 opacity-20"
+        className="absolute -inset-px -z-1 opacity-20"
         zoom={1.2}
         blendSoftness={0.4}
         color1={colors[0]}
