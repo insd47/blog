@@ -1,12 +1,20 @@
 import GameCard from '@/components/cards/game';
 
 export default async function ChunithmCard() {
+  const name = '5.6 Sol';
+  const rating = 17.14;
+  const min = 17.0;
+  const max = 17.25;
+
   return (
     <GameCard
       icon={icon}
       title="CHUNITHM"
-      rating={17.14}
-      grade={{ name: 'RAINBOW(B)', gap: 0.1 }}
+      name={name}
+      rating={rating}
+      min={min}
+      max={max}
+      grade="RAINBOW(B)"
       colors={['#CBF9FC', '#85C6E6', '#FFC3FF']}
     />
   );
