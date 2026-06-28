@@ -25,10 +25,10 @@ export default function PostMetadata({ tags, published, className, ...props }: P
         ))}
       </dd>
 
-      <dt>
+      <dt className="max-xs:hidden">
         <ClockIcon /> <span className="sr-only">Published</span>
       </dt>
-      <dd>
+      <dd className="max-xs:hidden">
         <time dateTime={published.toISOString()}>{formatter.date.format(published)}</time>
       </dd>
     </dl>

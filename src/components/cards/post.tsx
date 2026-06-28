@@ -18,22 +18,22 @@ export default function PostCard({
       {...props}
       href={`/posts/${slug}`}
       className={cn(
-        'group h-32.5 flex border-b hover:bg-foreground/2 transition-colors',
+        'group flex border-b hover:bg-foreground/2 transition-colors',
         className,
       )}
     >
       <Image
-        className="size-32.5 border-r md:w-50 object-cover overflow-hidden"
+        className="size-32.5 border-r md:w-50 object-cover overflow-hidden shrink-0"
         src={image}
         alt={title}
         width={200}
         height={130}
       />
 
-      <div className="flex flex-1 flex-col font-display px-4.5 justify-center">
+      <div className="flex flex-1 flex-col font-display p-4.5 justify-center">
         <h3
           className={cn(
-            'mb-2.5 text-base transition-all',
+            'mb-2.5 text-base transition-all line-clamp-2',
             'underline underline-offset-4 decoration-transparent group-hover:decoration-foreground/30',
           )}
         >

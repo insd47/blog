@@ -8,12 +8,15 @@ export default function GameCard({
   style,
   icon,
   title,
+  name = 'INSD',
   rating,
+  min,
+  max,
   grade,
   colors,
   ...props
 }: Props) {
-  const percent = ((rating % grade.gap) / grade.gap) * 100;
+  const percent = Math.max(0, Math.min(100, ((rating - min) / (max - min)) * 100));
 
   return (
     <div
@@ -34,16 +37,21 @@ export default function GameCard({
         {icon} <span className="max-sm:hidden">{title}</span>
       </div>
 
-      <div className="flex md:mb-6 mb-3.5">
-        <p className="md:text-4xl mr-3 text-foreground">{rating}</p>
-        <p className="mt-0.75 text-xs text-foreground/60 max-sm:hidden">{grade.name}</p>
-      </div>
+      <p className="md:text-2xl mb-3 text-foreground">{name}</p>
 
-      <div className="relative h-0.5 bg-foreground/30 mb-1">
+      <div className="relative h-0.5 bg-foreground/30 mb-2.5">
         <div
           className="absolute inset-y-0 left-0"
           style={{ width: `${percent}%`, backgroundColor: colors[0] }}
         />
+      </div>
+
+      <div className="flex items-center text-foreground/60 text-xs">
+        {grade && <p className="max-md:hidden uppercase">{grade}</p>}
+        {grade && <p className="max-md:hidden mx-1 text-foreground/40">·</p>}
+        <p>{rating}</p>
+        <p className="flex-1 max-sm:hidden" />
+        <p className="max-sm:hidden">{'=> ' + max}</p>
       </div>
     </div>
   );
@@ -52,7 +60,10 @@ export default function GameCard({
 interface Props extends ComponentProps<'div'> {
   icon: ReactNode;
   title: string;
+  name?: string;
   rating: number;
-  grade: { name: string; gap: number };
+  min: number;
+  max: number;
+  grade?: string;
   colors: [string, string, string];
 }

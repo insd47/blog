@@ -1,12 +1,31 @@
 import GameCard from '@/components/cards/game';
+import parse from 'node-html-parser';
 
 export default async function MaimaiCard() {
+  const id = 'insd47';
+
+  const html = await fetch(`https://maimai.shiftpsh.com/en/profile/${id}`)
+    .then((res) => res.text())
+    .then((text) => parse(text));
+
+  const title = html.querySelector('title')?.textContent.trim();
+  const data = title?.split(' | ')[0].split(' · ');
+
+  const gap = 250;
+  const name = data?.[0]?.normalize('NFKC');
+  const rating = Number(data?.[1].replace(',', ''));
+  const min = Math.floor(rating / gap) * gap;
+  const max = min + gap;
+
   return (
     <GameCard
       icon={icon}
       title="maimai DX"
-      rating={16152}
-      grade={{ name: 'RAINBOW', gap: 100 }}
+      name={name}
+      rating={rating}
+      min={min}
+      max={max}
+      grade="RAINBOW(B)"
       colors={['#F2BBCC', '#E64BA7', '#EBF4AF']}
     />
   );
