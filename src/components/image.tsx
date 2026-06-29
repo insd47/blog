@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useLayoutEffect, useRef, useState } from 'react';
+import { useLayoutEffect, useRef, useState } from 'react';
 import type { ComponentProps, ReactElement } from 'react';
 import { ImageOffIcon } from 'lucide-react';
 import type { ImageProps } from 'next/image';
@@ -21,25 +21,17 @@ export default function ImageFrame({ children, className, ...props }: Props) {
     setStatus('ready');
   }
 
-  const setSource = useCallback(
-    (node: HTMLImageElement | null) => {
-      if (!node || !src) return;
-      const { complete, naturalWidth } = node;
-      setStatus(complete ? (naturalWidth > 0 ? 'ready' : 'error') : 'loading');
-    },
-    [src],
-  );
-
-  useLayoutEffect(() => setSource(ref.current), [setSource]);
+  useLayoutEffect(() => {
+    if (!ref.current || !src) return;
+    const { complete, naturalWidth } = ref.current;
+    setStatus(complete ? (naturalWidth > 0 ? 'ready' : 'error') : 'loading');
+  }, [src]);
 
   return (
     <div {...props} className={cn('relative bg-foreground/2 overflow-hidden', className)}>
       {children && src && status !== 'error' && (
         <ImageSlot
-          ref={(node) => {
-            ref.current = node;
-            setSource(node);
-          }}
+          ref={ref}
           className={cn(
             'size-full object-cover shrink-0 opacity-0 transition-opacity duration-300',
             status === 'ready' && 'opacity-100',
