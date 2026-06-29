@@ -1,4 +1,6 @@
+import { Image, Figure, Figcaption } from '@/components/mdx/image';
 import thumbnail from './thumbnail.png';
+import windows from './windows.png';
 
 # Tauri 어플리케이션에서 네이티브 앱 느낌 내기
 
@@ -407,20 +409,14 @@ export default function SidebarLink({ className, ...props }: ComponentProps<type
 
 ## 마치며
 
-[//]: # (<figure className="px-0! -mt-5 mb-0! *:not-last:border-b *:first:border-r grid grid-cols-2">)
+<Figure className="-mt-5 mb-0! grid grid-cols-2">
+  <Image src={windows} alt="Tauri Windows App" className="border-r" />
+  <Image src={thumbnail} alt="Tauri macOS App" />
 
-[//]: # (  <Image src={windows} alt="Tauri Windows App" />)
-
-[//]: # (  <Image src={thumbnail} alt="Tauri macOS App" />)
-
-[//]: # ()
-[//]: # (  <figcaption className="col-span-2 *:mt-4! *:mb-6! text-center text-xs text-muted-foreground/60">)
-
-[//]: # (    제작 중인 Tauri 어플리케이션 &#40;좌: Windows, 우: macOS&#41;)
-
-[//]: # (  </figcaption>)
-
-[//]: # (</figure>)
+  <Figcaption className="col-span-2 *:m-0!">
+    제작 중인 Tauri 어플리케이션 (좌: Windows, 우: macOS)
+  </Figcaption>
+</Figure>
 
 Tauri 커스텀 플러그인을 활용하여, 창을 보다 Native App과 비슷한 느낌이 들도록 만들어 보았습니다.
 이 게시물에서는 대부분 제가 직접 만든 플러그인만 소개하였으나, 널리 사용되는 아래의 플러그인을 활용하면 더욱 깔끔한
