@@ -15,7 +15,7 @@ export default async function ProjectSection() {
         </Link>
       </header>
       {projects
-        .filter(({ index }) => !!index)
+        .filter(({ index }) => typeof index !== 'undefined')
         .map(({ code, title, stacks, banner }) => (
           <ProjectCard
             key={code}

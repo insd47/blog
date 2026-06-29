@@ -25,10 +25,7 @@ export function Code({ className, ...props }: ComponentProps<'code'>) {
   return (
     <code
       {...props}
-      className={cn(
-        'font-mono text-sm px-1 py-px rounded-sm bg-muted/50',
-        className,
-      )}
+      className={cn('font-mono text-sm px-1 py-px rounded-sm bg-muted/50', className)}
     />
   );
 }

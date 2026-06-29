@@ -1,6 +1,6 @@
 import { ComponentProps } from 'react';
 import { cn } from '@/lib/utils/cn';
-import Link from 'next/link';
+import { Anchor } from '@/components/mdx/inline';
 
 export default function Footer({ className, ...props }: ComponentProps<'footer'>) {
   const year = new Date().getFullYear();
@@ -19,17 +19,15 @@ export default function Footer({ className, ...props }: ComponentProps<'footer'>
       <div
         className={cn(
           'flex',
-          '[&>a]:underline [&>a]:underline-offset-4 [&>a]:decoration-[1.5px] [&>a]:decoration-transparent',
-          '[&>a]:hover:text-muted-foreground [&>a]:hover:decoration-foreground/30 [&>a]:transition-all',
+          '[&>a]:decoration-transparent [&>a]:hover:decoration-foreground/20',
+          ' [&>a]:hover:text-muted-foreground [&>a]:after:content-none',
           '*:not-first:before:content-["·"] *:not-first:before:mx-2 *:not-first:before:inline-block',
           '*:not-first:before:text-foreground/20!',
         )}
       >
-        <Link href="/privacy">PRIVACY</Link>
-        <Link href="/sbom.json">CREDITS</Link>
-        <Link href="https://github.com/insd47/blog" target="_blank" rel="noopener noreferrer">
-          SOURCE
-        </Link>
+        <Anchor href="/privacy">PRIVACY</Anchor>
+        <Anchor href="/sbom.json">CREDITS</Anchor>
+        <Anchor href="https://github.com/insd47/blog">SOURCE</Anchor>
       </div>
     </footer>
   );
