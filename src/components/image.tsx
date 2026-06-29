@@ -8,12 +8,14 @@ import { Slot } from 'radix-ui';
 import { cn } from '@/lib/utils/cn';
 import { useDelayedUnmount } from '@/lib/hooks/mount';
 import Loader from '@/components/loader';
+import { useImageSizes } from '@/lib/provider/image';
 
 export default function ImageFrame({ children, className, ...props }: Props) {
   const src = children?.props.src;
   const ref = useRef<HTMLImageElement | null>(null);
   const [status, setStatus] = useState<'loading' | 'ready' | 'error'>('loading');
   const indicator = useDelayedUnmount(status === 'loading', 300);
+  const { sizes, quality } = useImageSizes();
 
   if (!src && status !== 'error') {
     setStatus('error');
@@ -46,7 +48,8 @@ export default function ImageFrame({ children, className, ...props }: Props) {
           )}
           onLoad={() => setStatus('ready')}
           onError={() => setStatus('error')}
-          suppressHydrationWarning
+          sizes={sizes}
+          quality={quality}
         >
           {children}
         </ImageSlot>
@@ -72,7 +75,7 @@ export default function ImageFrame({ children, className, ...props }: Props) {
   );
 }
 
-const ImageSlot = Slot.createSlot<HTMLImageElement, ComponentProps<'img'>>('ImageFrame');
+const ImageSlot = Slot.createSlot<HTMLImageElement, Omit<ImageProps, 'src' | 'alt'>>('ImageFrame');
 
 interface Props extends Omit<ComponentProps<'div'>, 'children'> {
   children?: ReactElement<ImageProps> | null;

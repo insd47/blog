@@ -1,8 +1,11 @@
+'use client';
+
 import { ComponentProps } from 'react';
 import Image, { StaticImageData } from 'next/image';
 import Link from 'next/link';
 import { cn } from '@/lib/utils/cn';
 import PostMetadata from '@/app/posts/[slug]/_views/metadata';
+import ImageFrame from '@/components/image';
 
 export default function PostCard({
   slug,
@@ -19,11 +22,9 @@ export default function PostCard({
       href={`/posts/${slug}`}
       className={cn('group flex border-b hover:bg-foreground/2 transition-colors', className)}
     >
-      <Image
-        className="size-32.5 border-r md:w-50 object-cover overflow-hidden shrink-0"
-        src={thumbnail}
-        alt={title}
-      />
+      <ImageFrame className="size-32.5 border-r md:w-50 object-cover overflow-hidden shrink-0">
+        <Image src={thumbnail} alt={title} sizes="(max-width: 767px) 130px, 200px" quality={75} />
+      </ImageFrame>
 
       <div className="flex flex-1 flex-col font-display p-4.5 justify-center">
         <h3

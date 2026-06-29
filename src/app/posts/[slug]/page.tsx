@@ -7,6 +7,7 @@ import Separator from '@/components/separator';
 import HeaderSlot from '@/components/header/slot';
 import { StickyNoteIcon } from 'lucide-react';
 import { getPost, getPostList } from '@/lib/content/posts';
+import { ImageSizesProvider } from '@/lib/provider/image';
 
 export default async function PostPage({ params }: PageProps<'/posts/[slug]'>) {
   const { slug } = await params;
@@ -28,7 +29,12 @@ export default async function PostPage({ params }: PageProps<'/posts/[slug]'>) {
         <Separator className="col-span-full" />
 
         <div className="*:px-6 *:mb-5 pb-8 text-[15px] text-muted-foreground">
-          <Content />
+          <ImageSizesProvider
+            sizes="(max-width: 767px) 100vw, (max-width: 1023px) calc(100vw - 15rem), 720px"
+            quality={95}
+          >
+            <Content />
+          </ImageSizesProvider>
         </div>
 
         <PostAside sections={sections} />
