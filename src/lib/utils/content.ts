@@ -49,7 +49,7 @@ export async function importSummary(path: string) {
 
   const description = tree.children
     .filter((node) => node.type === 'paragraph')
-    .map((node) => toString(node))
+    .map((node) => toString(node, { includeImageAlt: false }))
     .map((text) => text.replace(/\s+/g, ' ').trim())
     .filter((text) => text.length > 0)
     .map((text) => truncate(text, 100))
