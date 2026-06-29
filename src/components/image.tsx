@@ -46,7 +46,7 @@ export default function ImageFrame({ children, className, ...props }: Props) {
           )}
           onLoad={() => setStatus('ready')}
           onError={() => setStatus('error')}
-          sizes="auto"
+          sizes="auto, 100vw"
         >
           {children}
         </ImageSlot>
