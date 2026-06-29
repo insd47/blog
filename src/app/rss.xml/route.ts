@@ -14,6 +14,7 @@ export async function GET() {
     link: config.metadata.url,
     language: 'ko',
     feed: config.metadata.url + '/rss.xml',
+    updated: posts.reduce((c, { date }) => (date && date > c ? date : c), new Date('1970-01-01')),
   });
 
   for (const post of posts) {
@@ -23,7 +24,7 @@ export async function GET() {
       title: post.title,
       description: post.description,
       published: post.published,
-      date: post.date ?? post.published,
+      date: post.date,
     });
   }
 

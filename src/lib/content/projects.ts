@@ -37,6 +37,6 @@ interface Project extends z.infer<typeof scheme> {
   code: string;
   title: string;
   stacks: string[];
-  date: Date | null;
+  date: Date;
   Content: ComponentType;
 }

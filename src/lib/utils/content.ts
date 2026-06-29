@@ -78,18 +78,19 @@ export async function importDocument<T extends z.ZodType>(
 export async function importDate(path: string) {
   const params = ['log', '-1', '--format=%cI', '--', `src/${path}`];
   const options = { cwd: process.cwd() };
+  const { stdout } = await execFile('git', params, options);
 
-  try {
-    const { stdout } =  await execFile('git', params, options);
-    const value = stdout.trim();
-    if (!value) return null;
-
-    const date = new Date(value);
-    return Number.isNaN(date.getTime()) ? null : date;
-  } catch (e) {
-    console.error(e);
-    return null;
+  const value = stdout.trim();
+  if (!value) {
+    throw new Error(`Failed to get date from git log: ${path}`);
   }
+
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) {
+    throw new Error(`Invalid date format: ${value}`);
+  }
+
+  return date;
 }
 
 const execFile = promisify(execFileRaw);

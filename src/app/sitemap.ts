@@ -5,40 +5,25 @@ import { getProjectList } from '@/lib/content/projects';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const url = config.metadata.url;
-
   const posts = await getPostList();
   const projects = await getProjectList();
 
+  const record: Record<string, Date> = {
+    '': new Date(),
+    '/posts': posts.reduce((c, { date }) => (date && date > c ? date : c), new Date('1970-01-01')),
+    '/projects': projects.reduce(
+      (c, { date }) => (date && date > c ? date : c),
+      new Date('1970-01-01'),
+    ),
+  };
 
-  const postLastModified = getLastModified(posts);
-  const projectLastModified = getLastModified(projects);
-  const lastModified = getLastModified([...posts, ...projects]);
+  for (const post of posts) {
+    record[`/posts/${post.slug}`] = post.date;
+  }
 
-  const pages = [
-    { path: '', lastModified },
-    { path: '/posts', lastModified: postLastModified },
-    { path: '/projects', lastModified: projectLastModified },
-  ];
+  for (const project of projects) {
+    record[`/projects/${project.code}`] = project.date;
+  }
 
-  return [
-    ...pages.map(({ path, lastModified }) => ({
-      url: url + path,
-      ...(lastModified && { lastModified }),
-    })),
-    ...posts.map(({ slug, date }) => ({
-      url: `${url}/posts/${slug}`,
-      lastModified: date,
-    })),
-    ...projects.map(({ code, date }) => ({
-      url: `${url}/projects/${code}`,
-      lastModified: date,
-    })),
-  ];
-}
-
-function getLastModified(items: { date: Date }[]) {
-  return items.reduce<Date | undefined>((latest, item) => {
-    if (!latest || item.date > latest) return item.date;
-    return latest;
-  }, undefined);
+  return Object.entries(record).map(([path, lastModified]) => ({ url: url + path, lastModified }));
 }
