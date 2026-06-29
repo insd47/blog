@@ -18,13 +18,13 @@ export default async function PostsPage() {
 
       <Separator />
 
-      {posts.map(({ slug, title, tags, image, published }) => (
+      {posts.map(({ slug, title, tags, thumbnail, published }) => (
         <PostCard
           key={slug}
           slug={slug}
           title={title}
           tags={tags}
-          image={image}
+          thumbnail={thumbnail}
           published={published}
         />
       ))}

@@ -14,14 +14,14 @@ export default async function ProjectSection() {
           <p className="no-underline! text-foreground/60">={'>'}</p>
         </Link>
       </header>
-      {projects.slice(0, 2).map(({ code, title, stacks, image }) => (
+      {projects.slice(0, 2).map(({ code, title, stacks, banner }) => (
         <ProjectCard
           key={code}
           className="last:border-0"
           code={code}
           title={title}
           stacks={stacks}
-          image={image}
+          banner={banner}
         />
       ))}
     </Section>

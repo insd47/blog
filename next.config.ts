@@ -13,6 +13,8 @@ const withMDX = createMDX({
     rehypePlugins: [
       'rehype-katex',
       'rehype-slug',
+      'rehype-unwrap-images',
+      'rehype-mdx-import-media',
       ['@shikijs/rehype', { theme: 'github-dark-dimmed', rootStyle: false }],
     ],
   },

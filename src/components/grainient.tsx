@@ -2,7 +2,6 @@
 
 import React, { type ComponentProps, useEffect, useRef } from 'react';
 import { Renderer, Program, Mesh, Triangle } from 'ogl';
-import { cn } from '@/lib/utils/cn';
 
 export default function Grainient({
   timeSpeed = 0.25,
@@ -27,7 +26,6 @@ export default function Grainient({
   color1 = '#FF9FFC',
   color2 = '#5227FF',
   color3 = '#B497CF',
-  className = '',
   ...props
 }: Props) {
   const containerRef = useRef<HTMLDivElement | null>(null);
@@ -141,13 +139,7 @@ export default function Grainient({
     color3,
   ]);
 
-  return (
-    <div
-      {...props}
-      ref={containerRef}
-      className={cn('relative h-full w-full overflow-hidden', className)}
-    />
-  );
+  return <div {...props} ref={containerRef} />;
 }
 
 interface Props extends ComponentProps<'div'> {
@@ -173,7 +165,6 @@ interface Props extends ComponentProps<'div'> {
   color1?: string;
   color2?: string;
   color3?: string;
-  className?: string;
 }
 
 const hexToRgb = (hex: string): [number, number, number] => {

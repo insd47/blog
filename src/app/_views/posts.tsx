@@ -14,7 +14,7 @@ export default async function PostSection() {
           <p className="no-underline! text-foreground/60">={'>'}</p>
         </Link>
       </header>
-      {posts.slice(0, 3).map(({ slug, title, tags, published, image }) => (
+      {posts.slice(0, 3).map(({ slug, title, tags, published, thumbnail }) => (
         <PostCard
           key={slug}
           className="last:border-0"
@@ -22,7 +22,7 @@ export default async function PostSection() {
           title={title}
           tags={tags}
           published={published}
-          image={image}
+          thumbnail={thumbnail}
         />
       ))}
     </Section>

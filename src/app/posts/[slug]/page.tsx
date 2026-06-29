@@ -55,7 +55,7 @@ export async function generateMetadata({ params }: PageProps<'/posts/[slug]'>): 
       description,
       url: `/posts/${slug}`,
       publishedTime: published.toISOString(),
-      modifiedTime: date.toISOString(),
+      modifiedTime: date?.toISOString(),
       authors: ['황인성'],
     },
   };
