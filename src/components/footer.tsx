@@ -7,9 +7,9 @@ export default function Footer({ className, ...props }: ComponentProps<'footer'>
   return (
     <footer
       {...props}
-      className={cn('h-20 pt-4.5 font-display text-center text-[13px] text-foreground/60', className)}
+      className={cn('h-20 pt-4.5 px-5 font-display text-[13px] text-foreground/60', className)}
     >
-      {year} INSUNG HWANG
+      <p>ⓒ {year} INSUNG HWANG</p>
     </footer>
   );
 }

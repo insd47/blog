@@ -33,7 +33,7 @@ const scheme = z.object({
   banner: z.custom<StaticImageData>(),
 });
 
-interface Project extends z.infer<typeof scheme> {
+export interface Project extends z.infer<typeof scheme> {
   code: string;
   title: string;
   stacks: string[];
