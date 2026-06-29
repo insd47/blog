@@ -1,7 +1,10 @@
+'use client';
+
 import { ComponentProps, Fragment } from 'react';
 import Image, { StaticImageData } from 'next/image';
 import { cn } from '@/lib/utils/cn';
 import Link from 'next/link';
+import ImageFrame from '@/components/image';
 
 export default function ProjectCard({ code, title, stacks, className, banner, ...props }: Props) {
   return (
@@ -34,11 +37,9 @@ export default function ProjectCard({ code, title, stacks, className, banner, ..
         </p>
       </div>
 
-      <Image
-        className="flex-1 min-w-22.5 h-22.5 md:h-55 object-cover overflow-hidden"
-        src={banner}
-        alt={title}
-      />
+      <ImageFrame className="flex-1 min-w-22.5 h-22.5 md:h-55 object-cover overflow-hidden">
+        <Image src={banner} alt={title} quality={95} />
+      </ImageFrame>
     </Link>
   );
 }

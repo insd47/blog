@@ -46,7 +46,7 @@ export default function ImageFrame({ children, className, ...props }: Props) {
           )}
           onLoad={() => setStatus('ready')}
           onError={() => setStatus('error')}
-          suppressHydrationWarning
+          sizes="auto"
         >
           {children}
         </ImageSlot>
@@ -72,7 +72,7 @@ export default function ImageFrame({ children, className, ...props }: Props) {
   );
 }
 
-const ImageSlot = Slot.createSlot<HTMLImageElement, ComponentProps<'img'>>('ImageFrame');
+const ImageSlot = Slot.createSlot<HTMLImageElement, Omit<ImageProps, 'src' | 'alt'>>('ImageFrame');
 
 interface Props extends Omit<ComponentProps<'div'>, 'children'> {
   children?: ReactElement<ImageProps> | null;

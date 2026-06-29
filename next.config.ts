@@ -4,6 +4,9 @@ import createMDX from '@next/mdx';
 const config: NextConfig = {
   reactCompiler: true,
   pageExtensions: ['js', 'jsx', 'md', 'mdx', 'ts', 'tsx'],
+  images: {
+    qualities: [75, 95],
+  },
 };
 
 const withMDX = createMDX({
