@@ -35,6 +35,7 @@ interface Post extends z.infer<typeof scheme> {
   slug: string;
   title: string;
   sections: string[];
+  description?: string;
   date: Date | null;
   Content: ComponentType;
 }
