@@ -38,12 +38,7 @@ export default function ProjectCard({ code, title, stacks, className, banner, ..
       </div>
 
       <ImageFrame className="flex-1 min-w-22.5 h-22.5 md:h-55 object-cover overflow-hidden">
-        <Image
-          src={banner}
-          alt={title}
-          sizes="(max-width: 767px) 50vw, (max-width: 1023px) calc(100vw - 20rem), 640px"
-          quality={95}
-        />
+        <Image src={banner} alt={title} quality={95} />
       </ImageFrame>
     </Link>
   );
