@@ -14,7 +14,6 @@ export async function GET() {
     link: config.metadata.url,
     language: 'ko',
     feed: config.metadata.url + '/rss.xml',
-    updated: getLastModified(posts),
   });
 
   for (const post of posts) {
@@ -23,8 +22,8 @@ export async function GET() {
       id: post.slug,
       title: post.title,
       description: post.description,
-      date: post.date,
       published: post.published,
+      date: post.date ?? post.published,
     });
   }
 
@@ -33,11 +32,4 @@ export async function GET() {
       'Content-Type': 'application/rss+xml; charset=utf-8',
     },
   });
-}
-
-function getLastModified(items: { date: Date }[]) {
-  return items.reduce<Date | undefined>((latest, item) => {
-    if (!latest || item.date > latest) return item.date;
-    return latest;
-  }, undefined);
 }
