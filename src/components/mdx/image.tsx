@@ -12,7 +12,7 @@ export function Image({ src, alt, title, ...props }: ComponentProps<typeof NextI
 
   if (!title) {
     return (
-      <ImageFrame className="border-b px-0!">
+      <ImageFrame className="border-y -mt-px px-0!">
         <NextImage {...props} src={src} alt={alt} title={title} />
       </ImageFrame>
     );
@@ -20,7 +20,7 @@ export function Image({ src, alt, title, ...props }: ComponentProps<typeof NextI
 
   return (
     <figure className="px-0!">
-      <ImageFrame className="border-b">
+      <ImageFrame className="border-y -mt-px">
         <NextImage {...props} src={src} alt={alt} title={title} />
       </ImageFrame>
 
