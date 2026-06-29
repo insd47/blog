@@ -12,7 +12,7 @@ import Loader from '@/components/loader';
 export default function ImageFrame({ children, className, ...props }: Props) {
   const src = children?.props.src;
   const ref = useRef<HTMLImageElement | null>(null);
-  const [status, setStatus] = useState<'loading' | 'ready' | 'error'>('loading');
+  const [status, setStatus] = useState<'loading' | 'ready' | 'error'>('ready');
   const indicator = useDelayedUnmount(status === 'loading', 300);
 
   if (!src && status !== 'error') {

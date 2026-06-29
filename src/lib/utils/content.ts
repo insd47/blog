@@ -75,6 +75,10 @@ export async function importDocument<T extends z.ZodType>(
   return { Content, metadata: scheme.parse(metadata) };
 }
 
+/**
+ * Git을 사용하여 문서의 마지막 수정일을 가져옵니다.
+ * @param path 문서의 경로. `src` 기준입니다.
+ */
 export async function importDate(path: string) {
   const params = ['log', '-1', '--format=%cI', '--', `src/${path}`];
   const options = { cwd: process.cwd() };

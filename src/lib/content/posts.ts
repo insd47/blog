@@ -31,7 +31,7 @@ const scheme = z.object({
   thumbnail: z.custom<StaticImageData>(),
 });
 
-interface Post extends z.infer<typeof scheme> {
+export interface Post extends z.infer<typeof scheme> {
   slug: string;
   title: string;
   sections: string[];
