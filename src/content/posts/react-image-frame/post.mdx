@@ -143,3 +143,89 @@ interface Props extends Omit<ComponentProps<'div'>, 'children'> {
 
 > `ImageFrame`은 Client Component로서 자식의 props를 활용하기 떄문에
 > 만약 자식 `Image`가 Server Component로서 렌더링된다면 충돌이 발생합니다. 이 점을 유의하여 사용하여야 합니다.
+
+## 외부 어플리케이션에서 사용하기
+
+Next.js의 이미지 최적화의 원리는 src를 `/_next/image` 라우트를 거쳐 로드하도록 하는 것입니다.
+해당 route는 원본 이미지를 변환 및 압축하고, 지정된 사이즈로 다운스케일링하여 반환합니다. 변환 과정은 꽤 오래 걸리지만,
+대부분의 Next.js 배포 환경은 이를 CDN에 캐싱할 것을 염두에 두기 때문에 결과적으로는 최적화의 역할을 수행합니다.
+
+만약 동일한 CDN 서버에 의존하는 로컬 어플리케이션(ex: 사이트를 관리하는 CMS 소프트웨어)가 있다면, 어떤 언어로 작성되어 있든
+Next.js 서버의 이미지 최적화 기능을 동일하게 누릴 수 있습니다. 예를 들어, React SPA를 프론트엔드로 두는 Tauri 앱에서:
+
+```tsx title="image.tsx"
+import { type ComponentProps, type SyntheticEvent } from 'react';
+import { resources } from '@/lib/features/aws';
+
+/**
+ * 비 Next 환경용 `next/image` Mock입니다.
+ * main의 Image Optimizer를 빌려 쓰기 위해 옵티마이저 URL과 srcSet을 직접 만듭니다.
+ */
+export default function NextImage({
+  src,
+  alt,
+  width,
+  height,
+  quality = 75,
+  sizes,
+  onLoad,
+  ...props
+}: NextImageProps) {
+  const { widths, kind } = getWidths(width, sizes);
+  const srcSet = widths
+    .map((w, i) => `${loader(src, w, quality)} ${kind === 'w' ? `${w}w` : `${i + 1}x`}`)
+    .join(', ');
+
+  function handleLoad(event: SyntheticEvent<HTMLImageElement>) {
+    void event.currentTarget.decode().finally(() => onLoad?.(event));
+  }
+
+  return (
+    <img
+      alt={alt}
+      src={loader(src, widths[widths.length - 1], quality)}
+      srcSet={srcSet}
+      sizes={sizes}
+      width={width}
+      height={height}
+      onLoad={handleLoad}
+      {...props}
+    />
+  );
+}
+
+interface NextImageProps extends Omit<
+  ComponentProps<'img'>,
+  'src' | 'width' | 'height' | 'srcSet'
+> {
+  src: string;
+  width?: number;
+  height?: number;
+  quality?: number;
+}
+
+const deviceSizes = [640, 750, 828, 1080, 1200, 1920, 2048, 3840];
+const imageSizes = [16, 32, 48, 64, 96, 128, 256, 384];
+const allSizes = [...imageSizes, ...deviceSizes];
+
+function loader(src: string, width: number, quality: number) {
+  const { stage } = resources.App;
+  const optimizer = stage === 'production' ? resources.Router.url : 'http://localhost:3000';
+  const resolved = src.startsWith('/storage/') ? `${resources.Router.url}${src}` : src;
+
+  return `${optimizer}/_next/image?url=${encodeURIComponent(resolved)}&w=${width}&q=${quality}`;
+}
+
+function getWidths(width: number | undefined, sizes: string | undefined) {
+  if (sizes || typeof width !== 'number') {
+    return { widths: deviceSizes, kind: 'w' as const };
+  }
+
+  const widths = [...new Set([width, width * 2].map((w) => allSizes.find((s) => s >= w) ?? 3840))];
+  return { widths, kind: 'x' as const };
+}
+```
+
+이런 식으로 `next/image`를 흉내 내는 컴포넌트를 작성하여 사용할 수 있습니다. 단순히 React 컴포넌트 뿐만 아니라,
+Jetpack Compose나 Flutter 등 다른 프레임워크에도 동일한 Mock을 작성하여 사용할 수도 있습니다.
+스토리지(S3 등)에는 원본 파일을 올리고, 모든 사용처에서 Next.js의 이미지 최적화 함수에 기대어 이미지를 렌더링할 수 있는 것입니다.
