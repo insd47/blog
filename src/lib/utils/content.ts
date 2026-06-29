@@ -72,8 +72,6 @@ export async function importDocument<T extends z.ZodType>(
     metadata: unknown;
   };
 
-  console.log(metadata);
-
   return { Content, metadata: scheme.parse(metadata) };
 }
 

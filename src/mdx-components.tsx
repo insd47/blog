@@ -1,10 +1,11 @@
 import type { MDXComponents } from 'mdx/types';
+import Separator from '@/components/separator';
 import { Paragraph, Heading2, Heading3, Heading4 } from '@/components/mdx/typography';
 import { Blockquote } from '@/components/mdx/blockquote';
 import { Pre } from '@/components/mdx/fence';
 import { OrderedList, UnorderedList } from '@/components/mdx/list';
-import Separator from '@/components/separator';
 import { Anchor, Code } from '@/components/mdx/inline';
+import { Image } from '@/components/mdx/image';
 
 export const mdxComponents: MDXComponents = {
   p: Paragraph,
@@ -21,6 +22,7 @@ export const mdxComponents: MDXComponents = {
   ul: UnorderedList,
   ol: OrderedList,
   a: Anchor,
+  img: Image,
 };
 
 export function useMDXComponents(): MDXComponents {

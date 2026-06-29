@@ -1,4 +1,3 @@
-import Image from 'next/image';
 import thumbnail from './thumbnail.png';
 
 # Unity 프로젝트에서 깔끔하게 의존성 관리하기
@@ -9,9 +8,4 @@ export const metadata = {
   thumbnail,
 };
 
-<figure>
-  <Image src={thumbnail} alt="thumbnail" />
-  <figcaption>
-    Photo by [orva studio](https://unsplash.com/@orvastudio) on [Unsplash](https://unsplash.com)
-  </figcaption>
-</figure>
+![thumbnail](thumbnail.png 'Photo by @orvastudio on Unsplash')

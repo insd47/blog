@@ -1,4 +1,3 @@
-import Image from 'next/image';
 import thumbnail from './thumbnail.png';
 
 # React와 Next.js에서 이미지에 로딩 인디케이터 표시하기
@@ -9,9 +8,4 @@ export const metadata = {
   thumbnail,
 };
 
-<figure>
-  <Image src={thumbnail} alt="thumbnail" />
-  <figcaption>
-    Photo by [James Wiseman](https://unsplash.com/@jameswiseman) on [Unsplash](https://unsplash.com)
-  </figcaption>
-</figure>
+![thumbnail](./thumbnail.png 'Photo by @jameswiseman on Unsplash')

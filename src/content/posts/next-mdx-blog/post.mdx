@@ -1,4 +1,3 @@
-import Image from 'next/image';
 import thumbnail from './thumbnail.png';
 
 # Next.js와 MDX로 블로그 제작하기
@@ -9,7 +8,7 @@ export const metadata = {
   thumbnail,
 };
 
-<Image src={thumbnail} className="px-0! border-b" alt="MDX 로고" />
+![MDX Logo](./thumbnail.png)
 
 프론트엔드 개발자로서 개인 사이트를 갖고 싶다는 열망이 항상 있었습니다.
 하지만 가뜩이나 프로젝트에 치여 시간이 부족한데, 블로그를 운영하기 위한 CMS를 직접 제작하는 것은 결코 쉽지 않은 결정입니다.
@@ -60,11 +59,7 @@ export const metadata = {
   published: '2026-06-24',
 };
 
-<Image
-  src={thumbnail}
-  className="-mt-8 px-0! border-b"
-  alt="썸네일 - MDX 로고"
-/>
+<Image src={thumbnail} className="-mt-8 px-0! border-b" alt="썸네일 - MDX 로고" />
 
 프론트엔드 개발자로서 개인 사이트를 개설하고 싶다는 열망이 항상 존재했습니다.
 ...
