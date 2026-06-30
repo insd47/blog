@@ -8,6 +8,9 @@ importers:
 
   .:
     dependencies:
+      '@insd47/ide-file-icons':
+        specifier: ^0.1.0
+        version: 0.1.0
       '@insd47/rehype-fence':
         specifier: github:insd47/rehype-fence
         version: https://codeload.github.com/insd47/rehype-fence/tar.gz/ef7f82bfd8c9becd8bd4fa2c1194348eeb68698a
@@ -455,6 +458,9 @@ packages:
     engines: {node: ^18.17.0 || ^20.3.0 || >=21.0.0}
     cpu: [x64]
     os: [win32]
+
+  '@insd47/ide-file-icons@0.1.0':
+    resolution: {integrity: sha512-qZpC27vnMJFpLcrQuDW3sPfq01zixcVj7/WSzHA1LFcgr4Xqp6/rvwfV7sq26KPPUL90Xk+RwVwNi28rkUqrdA==}
 
   '@insd47/rehype-fence@https://codeload.github.com/insd47/rehype-fence/tar.gz/ef7f82bfd8c9becd8bd4fa2c1194348eeb68698a':
     resolution: {gitHosted: true, integrity: sha512-fNGjb7iWfKFGzN2xFnUlzWK2obtbirHoEYm7WEk8hZeoUEs9A+dqOAyRpqK9/hnQIrxojJZhs9W7nV8SIN+8VA==, tarball: https://codeload.github.com/insd47/rehype-fence/tar.gz/ef7f82bfd8c9becd8bd4fa2c1194348eeb68698a}
@@ -3852,6 +3858,8 @@ snapshots:
 
   '@img/sharp-win32-x64@0.34.5':
     optional: true
+
+  '@insd47/ide-file-icons@0.1.0': {}
 
   '@insd47/rehype-fence@https://codeload.github.com/insd47/rehype-fence/tar.gz/ef7f82bfd8c9becd8bd4fa2c1194348eeb68698a':
     dependencies:
