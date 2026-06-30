@@ -49,10 +49,11 @@ export async function generateMetadata({ params }: PageProps<'/posts/[slug]'>): 
       canonical: `/posts/${slug}`,
     },
     openGraph: {
-      ...base.openGraph,
       type: 'article',
       title,
       description,
+      locale: 'ko_KR',
+      siteName: '황인성',
       url: `/posts/${slug}`,
       publishedTime: published.toISOString(),
       modifiedTime: date?.toISOString(),

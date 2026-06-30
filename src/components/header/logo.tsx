@@ -15,7 +15,7 @@ export default function HeaderLogo({ className, ...props }: ComponentProps<'a'>)
   );
 }
 
-function Logo(props: ComponentProps<'svg'>) {
+export function Logo(props: ComponentProps<'svg'>) {
   return (
     <svg
       {...props}

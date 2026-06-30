@@ -18,7 +18,7 @@ export const base: Metadata = {
     title: '황인성',
     siteName: '황인성',
     description: 'Junior Software Engineer',
-    images: '/opengraph.png',
+    images: '/opengraph/default.png',
   },
   icons: {
     icon: [
