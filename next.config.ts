@@ -18,7 +18,7 @@ const withMDX = createMDX({
       'rehype-slug',
       'rehype-unwrap-images',
       'rehype-mdx-import-media',
-      ['@shikijs/rehype', { theme: 'github-dark-dimmed', rootStyle: false }],
+      '@insd47/rehype-fence',
     ],
   },
 });
