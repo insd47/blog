@@ -33,7 +33,7 @@ export default function GameCard({
         color3={colors[2]}
       />
 
-      <div className="flex items-center *:mr-2 md:mb-2.5 mb-1.5 text-sm">
+      <div className="flex items-center *:mr-2 md:mb-2.5 mb-1.5 text-sm [&>svg]:h-3.5">
         {icon} <span className="max-sm:hidden">{title}</span>
       </div>
 

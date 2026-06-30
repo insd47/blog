@@ -1,21 +1,9 @@
 import GameCard from '@/components/cards/game';
 import parse from 'node-html-parser';
+import { cache } from 'react';
 
 export default async function MaimaiCard() {
-  const id = 'insd47';
-
-  const html = await fetch(`https://maimai.shiftpsh.com/en/profile/${id}`)
-    .then((res) => res.text())
-    .then((text) => parse(text));
-
-  const title = html.querySelector('title')?.textContent.trim();
-  const data = title?.split(' | ')[0].split(' · ');
-
-  const gap = 250;
-  const name = data?.[0]?.normalize('NFKC');
-  const rating = Number(data?.[1].replace(',', ''));
-  const min = Math.floor(rating / gap) * gap;
-  const max = min + gap;
+  const { name, rating, min, max } = await fetchRating();
 
   return (
     <GameCard
@@ -39,3 +27,22 @@ const icon = (
     />
   </svg>
 );
+
+const fetchRating = cache(async () => {
+  const id = 'insd47';
+
+  const html = await fetch(`https://maimai.shiftpsh.com/en/profile/${id}`)
+    .then((res) => res.text())
+    .then((text) => parse(text));
+
+  const title = html.querySelector('title')?.textContent.trim();
+  const data = title?.split(' | ')[0].split(' · ');
+
+  const gap = 250;
+  const name = data?.[0]?.normalize('NFKC');
+  const rating = Number(data?.[1].replace(',', ''));
+  const min = Math.floor(rating / gap) * gap;
+  const max = min + gap;
+
+  return { name, rating, min, max };
+})
