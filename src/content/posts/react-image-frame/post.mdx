@@ -127,6 +127,7 @@ interface Props extends Omit<ComponentProps<'div'>, 'children'> {
 사용처에서는 다음과 같이 사용합니다:
 
 ```tsx
+// 게시물 카드 옆 썸네일
 <ImageFrame className="size-32.5 border-r md:w-50 object-cover overflow-hidden shrink-0">
   <Image src={thumbnail} alt={title} quality={75} />
 </ImageFrame>
