@@ -16,6 +16,10 @@ const formatter = {
     weekday: 'long',
     timeZone: 'Asia/Seoul',
   }),
+  year: Intl.DateTimeFormat('en-CA', {
+    year: 'numeric',
+    timeZone: 'Asia/Seoul',
+  })
 };
 
 export default formatter;

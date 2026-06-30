@@ -20,7 +20,7 @@ export function Pre({ className, title, ...props }: ComponentProps<'pre'>) {
   return (
     <figure className="relative p-0! bg-foreground/1 text-[13px] border-y">
       {title && (
-        <figcaption className="bg-foreground/2 h-9 gap-1 flex items-center px-5 border-b">
+        <figcaption className="bg-foreground/2 h-9 gap-1 flex items-center px-3.5 border-b">
           <Image
             unoptimized
             src={`https://intellij-icons.jetbrains.design/icons/${icon}`}
@@ -34,8 +34,9 @@ export function Pre({ className, title, ...props }: ComponentProps<'pre'>) {
 
       <button
         className={cn(
-          'absolute flex flex-center top-1.75 right-2.25 size-5',
+          'absolute flex flex-center top-1.75 right-2.75 size-5',
           ' *:size-3.5 *:transition-[color,opacity] *:text-foreground/60 hover:*:text-foreground',
+          !title && 'right-1.75',
         )}
         onClick={onClick}
       >
