@@ -4,15 +4,17 @@ import { ComponentProps } from 'react';
 import NextImage from 'next/image';
 import ImageFrame from '@/components/image';
 import { cn } from '@/lib/utils/cn';
+import { useSizes } from '@/lib/providers/sizes';
 
 export function Image({
   src,
   alt,
   title,
   quality = 100,
-  sizes = 'auto',
   ...props
 }: ComponentProps<typeof NextImage>) {
+  const sizes = useSizes();
+
   if (!src || typeof src === 'string') {
     // eslint-disable-next-line @next/next/no-img-element
     return <img {...props} src={src} alt={alt} />;

@@ -70,7 +70,7 @@ export default function ImageFrame({ children, className, ...props }: Props) {
           )}
           onLoad={() => setStatus('ready')}
           onError={() => setStatus('error')}
-          preload={cached}
+          loading={cached ? 'eager' : 'lazy'}
           decoding={cached ? 'sync' : 'async'}
         >
           {children}

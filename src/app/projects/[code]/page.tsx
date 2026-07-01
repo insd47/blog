@@ -1,5 +1,6 @@
 import { getProject, getProjectList } from '@/lib/content/projects';
 import { notFound } from 'next/navigation';
+import { SizesProvider } from '@/lib/providers/sizes';
 
 export default async function ProjectPage({ params }: PageProps<'/projects/[code]'>) {
   const { code } = await params;
@@ -12,7 +13,9 @@ export default async function ProjectPage({ params }: PageProps<'/projects/[code
   return (
     <main>
       <h1>{title}</h1>
-      <Content />
+      <SizesProvider sizes="(min-width:1024px) 960px, 100vw">
+        <Content />
+      </SizesProvider>
     </main>
   );
 }
