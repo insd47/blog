@@ -5,7 +5,14 @@ import NextImage from 'next/image';
 import ImageFrame from '@/components/image';
 import { cn } from '@/lib/utils/cn';
 
-export function Image({ src, alt, title, quality = 95, ...props }: ComponentProps<typeof NextImage>) {
+export function Image({
+  src,
+  alt,
+  title,
+  quality = 100,
+  sizes = 'auto',
+  ...props
+}: ComponentProps<typeof NextImage>) {
   if (!src || typeof src === 'string') {
     // eslint-disable-next-line @next/next/no-img-element
     return <img {...props} src={src} alt={alt} />;
@@ -14,7 +21,7 @@ export function Image({ src, alt, title, quality = 95, ...props }: ComponentProp
   if (!title) {
     return (
       <ImageFrame className="border-y -mt-px px-0!">
-        <NextImage {...props} src={src} alt={alt} title={title} quality={quality} />
+        <NextImage {...props} src={src} alt={alt} title={title} sizes={sizes} quality={quality} />
       </ImageFrame>
     );
   }
@@ -22,7 +29,7 @@ export function Image({ src, alt, title, quality = 95, ...props }: ComponentProp
   return (
     <Figure>
       <ImageFrame className="border-y -mt-px">
-        <NextImage {...props} src={src} alt={alt} title={title} quality={quality} />
+        <NextImage {...props} src={src} alt={alt} title={title} sizes={sizes} quality={quality} />
       </ImageFrame>
 
       {title && <Figcaption>{title}</Figcaption>}

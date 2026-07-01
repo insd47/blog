@@ -11,7 +11,10 @@ export default function ProjectCard({ code, title, stacks, className, banner, ..
     <Link
       {...props}
       href={`/projects/${code}`}
-      className={cn('group flex border-b hover:bg-foreground/2 transition-colors', className)}
+      className={cn(
+        'group flex border-b hover:bg-foreground/2 transition-colors box-content',
+        className,
+      )}
     >
       <div
         className={cn(
@@ -38,7 +41,7 @@ export default function ProjectCard({ code, title, stacks, className, banner, ..
       </div>
 
       <ImageFrame className="flex-1 min-w-22.5 h-22.5 md:h-55 object-cover overflow-hidden">
-        <Image src={banner} alt={title} quality={95} />
+        <Image src={banner} alt={title} sizes="auto" quality={100} />
       </ImageFrame>
     </Link>
   );

@@ -20,13 +20,13 @@ export default function PostCard({
     <Link
       {...props}
       href={`/posts/${slug}`}
-      className={cn('group flex border-b hover:bg-foreground/2 transition-colors', className)}
+      className={cn('group flex border-b hover:bg-foreground/2 transition-colors box-content', className)}
     >
-      <ImageFrame className="size-32.5 border-r md:w-50 object-cover overflow-hidden shrink-0">
-        <Image src={thumbnail} alt={title} quality={75} />
+      <ImageFrame className="size-32.5 md:w-50 object-cover overflow-hidden shrink-0">
+        <Image src={thumbnail} alt={title} sizes="auto" quality={75} />
       </ImageFrame>
 
-      <div className="flex flex-1 flex-col font-display p-4.5 justify-center">
+      <div className="flex flex-1 flex-col border-l font-display p-4.5 justify-center">
         <h3
           className={cn(
             'mb-2.5 text-base transition-all line-clamp-2',
