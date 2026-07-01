@@ -1,9 +1,9 @@
 'use client';
 
-import { ComponentProps, ReactElement, useMemo } from 'react';
-import { useEffect, useRef, useState } from 'react';
+import { ComponentProps, ReactElement, useEffect, useRef } from 'react';
+import { useState } from 'react';
 import { ImageOffIcon } from 'lucide-react';
-import { getImageProps, ImageProps } from 'next/image';
+import { ImageProps } from 'next/image';
 import { Slot } from 'radix-ui';
 import { cn } from '@/lib/utils/cn';
 import { useDelayedUnmount } from '@/lib/hooks/mount';
@@ -12,49 +12,22 @@ import Loader from '@/components/loader';
 export default function ImageFrame({ children, className, ...props }: Props) {
   if (!children) throw new Error('ImageFrame must have <Image /> as a child');
 
+  const ref = useRef<HTMLImageElement>(null);
   const src = children.props.src;
-  const ref = useRef<HTMLImageElement | null>(null);
-  const key = typeof src === 'string' ? src : 'default' in src ? src.default.src : src.src;
-
-  const cached = useMemo(() => {
-    if (!hydrated) return false;
-
-    const { props } = getImageProps(children.props);
-    if (!props.srcSet) return false;
-
-    const entry = cache.get(key);
-    if (typeof entry === 'boolean') return entry;
-    if (entry) throw entry;
-
-    const candidates = props.srcSet
-      .split(',')
-      .map((c) => c.trim().split(/\s+/, 1)[0])
-      .map((url) => new URL(url, location.href).href);
-
-    const probes = candidates.map((s) =>
-      fetch(s, { cache: 'only-if-cached', mode: 'same-origin' })
-        .then((r) => r.ok)
-        .catch(() => false),
-    );
-
-    const promise = Promise.all(probes).then((r) => void cache.set(key, r.some(Boolean)));
-    cache.set(key, promise);
-
-    throw promise;
-  }, [children.props, key]);
-
-  const [status, setStatus] = useState<Status>(hydrated && !cached ? 'loading' : 'ready');
+  const [status, setStatus] = useState<Status>('ready');
   const indicator = useDelayedUnmount(status === 'loading', 300);
-
-  useEffect(() => {
-    if (!hydrated) hydrated = true;
-  }, []);
 
   if (!src && status !== 'error') {
     setStatus('error');
   } else if (src && status === 'error') {
     setStatus('ready');
   }
+
+  useEffect(() => {
+    if (!ref.current?.complete) {
+      setStatus('loading');
+    }
+  }, []);
 
   return (
     <div
@@ -80,13 +53,8 @@ export default function ImageFrame({ children, className, ...props }: Props) {
             'size-full object-cover shrink-0 transition-opacity duration-300',
             status !== 'ready' && 'opacity-0',
           )}
-          onLoad={() => {
-            cache.set(key, true);
-            setStatus('ready');
-          }}
+          onLoad={() => setStatus('ready')}
           onError={() => setStatus('error')}
-          loading={cached ? 'eager' : 'lazy'}
-          decoding={cached ? 'sync' : 'async'}
         >
           {children}
         </ImageSlot>
@@ -105,8 +73,6 @@ export default function ImageFrame({ children, className, ...props }: Props) {
 
 type Status = 'loading' | 'ready' | 'error';
 const ImageSlot = Slot.createSlot<HTMLImageElement, Omit<ImageProps, 'src' | 'alt'>>('ImageFrame');
-const cache = new Map<string, boolean | Promise<void>>();
-let hydrated = false;
 
 interface Props extends Omit<ComponentProps<'div'>, 'children'> {
   children?: ReactElement<ImageProps> | null;
