@@ -8,6 +8,7 @@ import { Slot } from 'radix-ui';
 import { cn } from '@/lib/utils/cn';
 import { useDelayedUnmount } from '@/lib/hooks/mount';
 import Loader from '@/components/loader';
+import * as cache from './cache';
 
 export default function ImageFrame({ children, className, ...props }: Props) {
   if (!children) throw new Error('ImageFrame must have <Image /> as a child');
@@ -22,25 +23,12 @@ export default function ImageFrame({ children, className, ...props }: Props) {
     const { props } = getImageProps(children.props);
     if (!props.srcSet) return false;
 
-    const entry = cache.get(key);
-    if (typeof entry === 'boolean') return entry;
-    if (entry) throw entry;
-
     const candidates = props.srcSet
       .split(',')
       .map((c) => c.trim().split(/\s+/, 1)[0])
       .map((url) => new URL(url, location.href).href);
 
-    const probes = candidates.map((s) =>
-      fetch(s, { cache: 'only-if-cached', mode: 'same-origin' })
-        .then((r) => r.ok)
-        .catch(() => false),
-    );
-
-    const promise = Promise.all(probes).then((r) => void cache.set(key, r.some(Boolean)));
-    cache.set(key, promise);
-
-    throw promise;
+    return cache.read(key, candidates);
   }, [children.props, key]);
 
   const [status, setStatus] = useState<Status>(hydrated && !cached ? 'loading' : 'ready');
@@ -81,7 +69,7 @@ export default function ImageFrame({ children, className, ...props }: Props) {
             status !== 'ready' && 'opacity-0',
           )}
           onLoad={() => {
-            cache.set(key, true);
+            cache.write(key);
             setStatus('ready');
           }}
           onError={() => setStatus('error')}
@@ -105,7 +93,6 @@ export default function ImageFrame({ children, className, ...props }: Props) {
 
 type Status = 'loading' | 'ready' | 'error';
 const ImageSlot = Slot.createSlot<HTMLImageElement, Omit<ImageProps, 'src' | 'alt'>>('ImageFrame');
-const cache = new Map<string, boolean | Promise<void>>();
 let hydrated = false;
 
 interface Props extends Omit<ComponentProps<'div'>, 'children'> {

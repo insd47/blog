@@ -2,6 +2,7 @@
 
 @import 'tailwindcss';
 
+/*noinspection CssUnresolvedCustomProperty*/
 @theme inline {
   --color-background: oklch(0 0 0);
   --color-foreground: oklch(0.955 0 0);
@@ -10,8 +11,8 @@
   --color-border: oklch(0.26 0 0);
 
   --font-sans: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, "Helvetica Neue", "Segoe UI", "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif;
-  --font-mono: var(--font-mono);
-  --font-display: var(--font-display);
+  --font-mono: var(--next-font-jetbrains), 'ui-monospace', 'SFMono-Regular', 'Menlo', 'Monaco', 'Consolas', 'monospace';
+  --font-display: var(--next-font-jetbrains), 'Pretendard Variable', 'Pretendard', 'monospace';
 
   --breakpoint-xs: 30rem;
   --breakpoint-lg: 962px;
