@@ -16,7 +16,7 @@ export default function ProjectCard({ code, title, stacks, className, banner, ..
       <div
         className={cn(
           'flex flex-col max-md:justify-center',
-          'text-xs md:text-sm font-display md:w-80 max-md:flex-3 py-4.5 px-4 border-r',
+          'text-xs md:text-sm font-display md:w-80 max-md:flex-1 py-4.5 px-4 border-r',
         )}
       >
         <h3
@@ -37,7 +37,7 @@ export default function ProjectCard({ code, title, stacks, className, banner, ..
         </p>
       </div>
 
-      <ImageFrame className="max-sm:flex-2 max-md:w-80 h-22.5 md:h-55 object-cover overflow-hidden">
+      <ImageFrame className="max-sm:flex-1 max-md:w-80 h-27.5 md:h-55 object-cover overflow-hidden">
         <Image src={banner} alt={title} sizes="(min-width:768px) 640px, 320px" quality={100} />
       </ImageFrame>
     </Link>

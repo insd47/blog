@@ -28,7 +28,7 @@ export default async function PostPage({ params }: PageProps<'/posts/[slug]'>) {
         <PostHeader className="col-span-full" published={published} tags={tags} title={title} />
         <Separator className="col-span-full" />
 
-        <SizesProvider sizes="(min-width:1024px) 720px, (min-width:768px) calc(100vw-15rem), 100vw">
+        <SizesProvider sizes="(min-width:1024px) 720px, (min-width:768px) calc(100vw - 15rem), 100vw">
           <div className="*:px-6 *:mb-5 pb-8 text-[15px] text-muted-foreground">
             <Content />
           </div>
