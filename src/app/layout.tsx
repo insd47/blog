@@ -12,7 +12,7 @@ import { cn } from '@/lib/utils/cn';
 export default function RootLayout({ children }: PropsWithChildren) {
   return (
     <HeaderProvider>
-      <html lang="ko" className={cn(mono.variable, display.variable)}>
+      <html lang="ko" className={cn(jetbrains.variable)}>
         <body>
           <Header />
           <Separator />
@@ -27,14 +27,8 @@ export default function RootLayout({ children }: PropsWithChildren) {
 
 export const metadata: Metadata = config.metadata.base;
 
-const mono = JetBrains_Mono({
-  variable: '--font-mono',
-  subsets: ['latin', 'latin-ext'],
-  fallback: ['ui-monospace', 'SFMono-Regular', 'Menlo', 'Monaco', 'Consolas', 'monospace'],
-});
-
-const display = JetBrains_Mono({
-  variable: '--font-display',
-  subsets: ['latin', 'latin-ext'],
-  fallback: ['Pretendard Variable', 'Pretendard', 'monospace'],
+const jetbrains = JetBrains_Mono({
+  variable: '--next-font-jetbrains',
+  subsets: ['latin'],
+  fallback: [],
 });

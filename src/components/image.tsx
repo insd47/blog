@@ -1,33 +1,42 @@
 'use client';
 
-import { ComponentProps, ReactElement, useEffect, useRef } from 'react';
+import { ComponentProps, ReactElement, SyntheticEvent, useEffect, useMemo, useRef } from 'react';
 import { useState } from 'react';
 import { ImageOffIcon } from 'lucide-react';
 import { ImageProps } from 'next/image';
 import { Slot } from 'radix-ui';
 import { cn } from '@/lib/utils/cn';
-import { useDelayedUnmount } from '@/lib/hooks/mount';
 import Loader from '@/components/loader';
+import { getCurrentSrc } from '@/lib/utils/image';
+import { useDelayedUnmount } from '@/lib/hooks/mount';
 
 export default function ImageFrame({ children, className, ...props }: Props) {
   if (!children) throw new Error('ImageFrame must have <Image /> as a child');
 
-  const ref = useRef<HTMLImageElement>(null);
   const src = children.props.src;
-  const [status, setStatus] = useState<Status>('ready');
+  const ref = useRef<HTMLImageElement | null>(null);
+
+  const seen = useMemo(() => {
+    if (!hydrated) return false;
+
+    const currentSrc = getCurrentSrc(children.props);
+    if (!currentSrc) return false;
+
+    return sessionStorage.getItem(`ImageFrame:${currentSrc}`) === 'true';
+  }, [children.props]);
+
+  const [status, setStatus] = useState<Status>(hydrated && !seen ? 'loading' : 'ready');
   const indicator = useDelayedUnmount(status === 'loading', 300);
 
-  if (!src && status !== 'error') {
-    setStatus('error');
-  } else if (src && status === 'error') {
-    setStatus('ready');
-  }
-
   useEffect(() => {
-    if (!ref.current?.complete) {
-      setStatus('loading');
-    }
+    if (!hydrated) hydrated = true;
+    if (!ref.current?.complete) setStatus('loading');
   }, []);
+
+  function onLoad(e: SyntheticEvent<HTMLImageElement>) {
+    setStatus('ready');
+    sessionStorage.setItem(`ImageFrame:${e.currentTarget.currentSrc}`, 'true');
+  }
 
   return (
     <div
@@ -46,20 +55,23 @@ export default function ImageFrame({ children, className, ...props }: Props) {
           )}
         />
       )}
-      {status !== 'error' && (
+      {src && status !== 'error' && (
         <ImageSlot
           ref={ref}
           className={cn(
             'size-full object-cover shrink-0 transition-opacity duration-300',
             status !== 'ready' && 'opacity-0',
           )}
-          onLoad={() => setStatus('ready')}
+          onLoad={onLoad}
           onError={() => setStatus('error')}
+          loading={seen ? 'eager' : 'lazy'}
+          decoding={seen ? 'sync' : 'async'}
+          suppressHydrationWarning
         >
           {children}
         </ImageSlot>
       )}
-      {status === 'error' && (
+      {(!src || status === 'error') && (
         <ImageOffIcon
           className={cn(
             'absolute left-1/2 top-1/2 size-6 -translate-x-1/2 -translate-y-1/2',
@@ -73,6 +85,7 @@ export default function ImageFrame({ children, className, ...props }: Props) {
 
 type Status = 'loading' | 'ready' | 'error';
 const ImageSlot = Slot.createSlot<HTMLImageElement, Omit<ImageProps, 'src' | 'alt'>>('ImageFrame');
+let hydrated = false;
 
 interface Props extends Omit<ComponentProps<'div'>, 'children'> {
   children?: ReactElement<ImageProps> | null;

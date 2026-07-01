@@ -4,6 +4,19 @@ import createMDX from '@next/mdx';
 const config: NextConfig = {
   reactCompiler: true,
   pageExtensions: ['js', 'jsx', 'md', 'mdx', 'ts', 'tsx'],
+  async headers() {
+    return [
+      {
+        source: '/image-cache.sw.js',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'no-cache, no-store, must-revalidate',
+          },
+        ],
+      },
+    ];
+  },
   images: {
     formats: ['image/avif', 'image/webp'],
     qualities: [75, 100],
