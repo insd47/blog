@@ -8,7 +8,7 @@ const config: NextConfig = {
     formats: ['image/avif', 'image/webp'],
     qualities: [75, 100],
     deviceSizes: [640, 720, 960, 1280, 1440, 1920],
-    imageSizes: [32, 48, 64, 96, 128, 256, 384, 130, 200, 260, 400],
+    imageSizes: [32, 48, 64, 96, 128, 256, 384, 200, 400],
   },
 };
 

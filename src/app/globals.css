@@ -14,6 +14,7 @@
   --font-display: var(--font-display);
 
   --breakpoint-xs: 30rem;
+  --breakpoint-lg: 962px;
 }
 
 @utility bg-noise {
