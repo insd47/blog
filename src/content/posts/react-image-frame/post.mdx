@@ -294,6 +294,16 @@ interface Props extends Omit<ComponentProps<'div'>, 'children'> {
 - SSR을 보다 깔끔하게 분기합니다. 전용 `hydrated` 변수를 사용하여,
   서버를 거치지 않는 렌더는 state 초기값 자체에서 `loading`을 설정할 수 있도록 하였습니다.
 
+Next.js 공식 문서상, 즉시 표시되어야 하는 LCP(Largest Contentful Paint) 요소에만
+`loading="eager"`를 수동으로 붙여 주는 것이 정석입니다. 하지만 마크다운 컨텐츠 배포를 주력으로 하는 저로써는
+이를 적절하게 할당하기 현실적으로 어려웠습니다. 이 때 `sessionStorage`는 적절한 타협점이 되었습니다.
+
+> ### 왜 `sessionStorage`인가요?
+>
+> 브라우저에서 이미지가 캐싱되었는지 확인할 수 있는 전용 API가 없습니다.
+> `fetch(url, { cache: 'only-if-cached' })`나 `performance.getEntriesByName` 등 다양한 방법을 시도해보았지만,
+> 저는 `sessionStorage`가 가장 적절한 타협점으로 결론지었습니다.
+
 렌더링 전 동기적으로 정확한 `srcSet` 후보를 뽑기 위하여,
 [`@insd47/current-src`](https://github.com/insd47/current-src) 패키지를 만들었습니다. 다음과 같이 설치하실 수 있습니다.
 
@@ -301,9 +311,9 @@ interface Props extends Omit<ComponentProps<'div'>, 'children'> {
 pnpm install @insd47/current-src
 ```
 
-> 브라우저에서 이미지가 캐싱되었는지 확인할 수 있는 전용 API가 없어 부득이하게 `sessionStorage`를 사용하였습니다.
-> `fetch(url, { cache: 'only-if-cached' })`나 `performance.getEntriesByName` 등 다양한 방법을 시도해보았지만,
-> 저는 `sessionStorage`가 가장 적절한 타협점으로 결론지었습니다.
+### 관련 문서
+
+[MDN - HTMLImageElement loading property](https://developer.mozilla.org/en-US/docs/Web/API/HTMLImageElement/loading)
 
 ## 외부 어플리케이션에서 사용하기
 
