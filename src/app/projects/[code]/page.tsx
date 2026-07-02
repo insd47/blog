@@ -13,7 +13,7 @@ export default async function ProjectPage({ params }: PageProps<'/projects/[code
   return (
     <main>
       <h1>{title}</h1>
-      <SizesProvider sizes="(min-width:1024px) 960px, 100vw">
+      <SizesProvider sizes="(min-width:962px) 960px, 100vw">
         <Content />
       </SizesProvider>
     </main>

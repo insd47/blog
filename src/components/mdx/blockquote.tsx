@@ -6,7 +6,7 @@ export function Blockquote({ className, ...props }: ComponentProps<'blockquote'>
     <blockquote
       {...props}
       className={cn(
-        'relative p-6 *:m-0! border-y bg-foreground/2',
+        'relative p-6 *:my-0! border-y bg-foreground/2',
         '[&::before,&::after]:absolute [&::before,&::after]:font-display [&::before,&::after]:text-xl',
         '[&::before,&::after]:h-4.25 [&::before,&::after]:pointer-events-none',
         'before:content-["“"] before:-top-2 before:left-4',

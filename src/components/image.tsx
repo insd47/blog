@@ -3,11 +3,11 @@
 import { ComponentProps, ReactElement, SyntheticEvent, useEffect, useMemo, useRef } from 'react';
 import { useState } from 'react';
 import { ImageOffIcon } from 'lucide-react';
-import { ImageProps } from 'next/image';
+import { getImageProps, ImageProps } from 'next/image';
 import { Slot } from 'radix-ui';
 import { cn } from '@/lib/utils/cn';
 import Loader from '@/components/loader';
-import { getCurrentSrc } from '@/lib/utils/image';
+import { resolveCurrentSrc } from '@insd47/current-src';
 import { useDelayedUnmount } from '@/lib/hooks/mount';
 
 export default function ImageFrame({ children, className, ...props }: Props) {
@@ -17,12 +17,15 @@ export default function ImageFrame({ children, className, ...props }: Props) {
   const ref = useRef<HTMLImageElement | null>(null);
 
   const seen = useMemo(() => {
-    if (!hydrated) return false;
+    if (typeof window === 'undefined') return false;
+    const { props } = getImageProps(children.props);
 
-    const currentSrc = getCurrentSrc(children.props);
-    if (!currentSrc) return false;
+    const src = props.srcSet
+      ? (resolveCurrentSrc(props.srcSet, props.sizes) ?? props.src)
+      : props.src;
 
-    return sessionStorage.getItem(`ImageFrame:${currentSrc}`) === 'true';
+    const key = new URL(src, window.location.href).href;
+    return sessionStorage.getItem(`ImageFrame:${key}`) === 'true';
   }, [children.props]);
 
   const [status, setStatus] = useState<Status>(hydrated && !seen ? 'loading' : 'ready');
@@ -33,9 +36,10 @@ export default function ImageFrame({ children, className, ...props }: Props) {
     if (!ref.current?.complete) setStatus('loading');
   }, []);
 
-  function onLoad(e: SyntheticEvent<HTMLImageElement>) {
+  function onLoad({ currentTarget }: SyntheticEvent<HTMLImageElement>) {
     setStatus('ready');
-    sessionStorage.setItem(`ImageFrame:${e.currentTarget.currentSrc}`, 'true');
+    const key = new URL(currentTarget.currentSrc, window.location.href).href;
+    sessionStorage.setItem(`ImageFrame:${key}`, 'true');
   }
 
   return (

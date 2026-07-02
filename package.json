@@ -9,6 +9,7 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@insd47/current-src": "^1.0.0",
     "@insd47/ide-file-icons": "^0.1.0",
     "@insd47/rehype-fence": "github:insd47/rehype-fence",
     "@mdx-js/loader": "^3.1.1",

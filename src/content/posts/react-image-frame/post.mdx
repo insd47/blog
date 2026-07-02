@@ -1,10 +1,11 @@
 import thumbnail from './thumbnail.png';
+import { LoadingIndicatorDemo } from './views';
 
 # Next.js에서 이미지 로딩 경험 개선하기
 
 export const metadata = {
   tags: ['MDX', 'Next.js', 'React'],
-  published: '2026-06-29',
+  published: '2026-07-02',
   thumbnail,
 };
 
@@ -18,92 +19,240 @@ Next.js의 [이미지 최적화 기능](https://nextjs.org/docs/app/getting-star
 
 ## 다양한 사이즈에 대응하기
 
-아무 옵션 없이, `<Image />` 컴포넌트에 `src`, `width`, `height`만 제공한다면 `1x` 및 `2x` 크기에 대응합니다.
-이는 이미지가 정확히 지정된 크기 그대로 사용될 때는 정확합니다.
-하지만 다양한 비율이 고정된 크기의 작은 썸네일에 사용될 수도 있고, 게시물 너비에 꽉 맞게 표시되어야 할 떄도 있습니다.
-이러한 상황에서 원본 이미지의 크기를 그대로 불러오는 것은 비효율적입니다.
-
-`<Image />` 컴포넌트는 `sizes` 옵션을 제공합니다. 현재 화면의 너비에 대응하여 적절한 사이즈의 이미지를 표시하기 위한
-HTML 표준 문법입니다. 직접 작성하실 수도 있지만, Next.js에서는 다음과 같이 정말 간단하게 사용하실 수 있습니다.
+`<Image />`를 가장 간단하게 사용하면, 다음과 같이 사용할 수 있습니다.
 
 ```tsx
-<Image src={banner} alt="banner image" sizes="auto" />
+<Image src={src} alt="My Image" width={1920} height={1080} />
 ```
 
-`next/image`에서 `auto` 옵션을 사용하면 `next.config.ts`에 지정한 이미지 너비 목록을 `srcSet`에 전부 하드코딩하여,
-현재 표시되고 있는 이미지의 크기를 기반으로 가장 적절한 이미지를 표시하도록 할 수 있습니다.
-본래 `auto` 옵션을 사용하려면 `loading="lazy"`가 설정되어 있어야 하나,
-Next.js `<Image />` 컴포넌트의 `loading`의 기본값은 `eager`가 아닌 `lazy`이므로 생략하고 사용하여도 됩니다.
+이는 HTML에 다음과 같이 렌더링됩니다:
+
+```html
+<img
+  alt="thumbnail"
+  loading="lazy"
+  width="1920"
+  height="1280"
+  decoding="async"
+  data-nimg="1"
+  srcset="
+    /_next/image?url=%2F_next%2Fstatic%2Fmedia%source.26d59dbb.png&amp;w=1920&amp;q=75 1x
+    /_next/image?url=%2F_next%2Fstatic%2Fmedia%source.26d59dbb.png&amp;w=1920&amp;q=75 2x
+  "
+  src="
+    https://insd.dev/_next/image?url=%2F_next%2Fstatic%2Fmedia%source.26d59dbb.png&amp;w=3840&amp;q=100
+  "
+/>
+```
+
+- `/_next/image`라는 특수 Function의 프록시를 거쳐 이미지를 변환합니다. 로드에 꽤 오랜 시간을 소요하지만,
+  Vercel이나 OpenNext 등의 배포 방법을 선택한다면 대부분 CDN에 결과가 캐싱되므로 이를 활용합니다.
+  - `url=`은 이미지의 실제 경로입니다. URL-Safe하게 인코딩되어 삽입됩니다.
+  - `w=`는 이미지의 너비입니다. `next.config.ts`의 `images.deviceSizes`에 지정된 크기만 사용할 수 있으므로,
+    이미지의 width 및 height를 사용하여 가장 가까운 크기를 할당합니다.
+  - `q=`는 변환할 이미지의 압축 퀄리티입니다. 낮을수록 용량이 작아지지만 품질이 떨어지며, 기본값은 `75`입니다.
+
+기본 옵션은 충분히 좋지만, 다음의 문제점을 가지고 있습니다.
+
+- `srcset`이 이미지의 너비를 기준으로 만들어지므로, 스타일링된 크기에 비해 과도하게 큰 이미지를 할당받을 수 있습니다.
+- `width`가 한정되므로 상황에 따라 이미지가 실제에 비해 미묘하게 품질이 떨어질 수 있습니다.
+
+이미지를 의도대로 정확하게 표시하면서 네트워크 비용을 절약하고 싶다면
+`next.config.ts`에서 이미지 크기 세트를 자주 사용되는 너비로 선별하고 `sizes` 옵션을 함께 활용하는 것이 좋습니다.
+
+예를 들어, 이 블로그에서는 `640px`, `720px`, `960px`의 게시물 너비만을 사용하며
+썸네일 이미지는 `200px`를 사용합니다. 이 때 `next.config.ts`를 다음과 같이 설정할 수 있습니다.
+
+```ts title="next.config.ts"
+const config: NextConfig = {
+  images: {
+    formats: ['image/avif', 'image/webp'],
+    qualities: [75, 100],
+    deviceSizes: [640, 720, 960, 1280, 1440, 1920],
+    imageSizes: [32, 48, 64, 96, 128, 256, 384, 200, 400],
+  },
+  ...
+}
+```
+
+- `qualities`에 `100`을 추가하였습니다. 블로그에 스크린샷이 많이 사용되므로, 해당 값이 낮으면 크게 깨져 보이기 때문입니다.
+- `deviceSizes`는 게시물 너비에 더불어, Retina 2x까지 대응 가능하도록 해당 너비의 2배수 값까지 삽입하였습니다.
+- `imageSizes`는 Next.js 기본값과 더불어 썸네일 이미지의 너비인 `200px`와 그 2배수 값을 삽입하였습니다.
+
+그리고 게시물 내부와 썸네일에 각각 `sizes` 옵션을 사용합니다.
+
+```tsx
+// 게시물 내부. ToC의 표시 여부에 따른 반응형 너비 셋까지 함께 고려하였음.
+<Image
+  src={thumbnail}
+  alt="썸네일 이미지"
+  width={1920}
+  height={1080}
+  sizes="(min-width:962px) 720px, (min-width:768px) calc(100vw - 15rem), 100vw"
+/>
+
+// 썸네일 이미지. 사이즈는 모든 환경에서 항상 200px이다.
+<Image src={thumbnail} alt="썸네일 이미지" width={1920} height={1080} sizes="200px" />
+```
+
+`sizes` 옵션을 사용하는 즉시, Next.js의 srcSet 생성값이 다음과 같이 변경됩니다.
+
+```
+/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fthumbnail.03hg3m62xy-9q.png&amp;w=32&amp;q=75 32w,
+/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fthumbnail.03hg3m62xy-9q.png&amp;w=48&amp;q=75 48w,
+/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fthumbnail.03hg3m62xy-9q.png&amp;w=64&amp;q=75 64w,
+/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fthumbnail.03hg3m62xy-9q.png&amp;w=96&amp;q=75 96w,
+/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fthumbnail.03hg3m62xy-9q.png&amp;w=128&amp;q=75 128w,
+/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fthumbnail.03hg3m62xy-9q.png&amp;w=200&amp;q=75 200w,
+/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fthumbnail.03hg3m62xy-9q.png&amp;w=256&amp;q=75 256w,
+/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fthumbnail.03hg3m62xy-9q.png&amp;w=384&amp;q=75 384w,
+/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fthumbnail.03hg3m62xy-9q.png&amp;w=400&amp;q=75 400w,
+/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fthumbnail.03hg3m62xy-9q.png&amp;w=640&amp;q=100 640w,
+/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fthumbnail.03hg3m62xy-9q.png&amp;w=720&amp;q=100 720w,
+/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fthumbnail.03hg3m62xy-9q.png&amp;w=960&amp;q=100 960w,
+/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fthumbnail.03hg3m62xy-9q.png&amp;w=1280&amp;q=100 1280w,
+/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fthumbnail.03hg3m62xy-9q.png&amp;w=1440&amp;q=100 1440w,
+/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fthumbnail.03hg3m62xy-9q.png&amp;w=1920&amp;q=100 1920w
+```
+
+- `1x`와 `2x`만 삽입되었던 것이 `deviceSizes`와 `imageSizes`에 지정하였던 모든 값이 하드코딩되도록 변경됩니다.
+- 브라우저는 `sizes`를 통해 자동으로 가장 적절한 이미지 너비를 선택하여 렌더링됩니다.
+- 오작동을 방지하기 위해서인지, `sizes`가 충분히 작은 값일 때만 `imageSizes` 값이 하드코딩됩니다.
+
+> `loading="lazy"`를 사용하면, `sizes="auto"`가 사용 가능해집니다.
+> 이는 sizes를 직접 작성하는 부담을 덜어주지만, 저는 다음과 같은 이유로 이를 추천하지 않습니다.
+>
+> - `loading="eager"`가 꼭 필요할 때 이를 사용할 수 없어집니다.
+> - Safari 27.0 이전 버전은 `sizes="auto"`를 지원하지 않습니다. 글 작성 시점에서 27.0은 개발자 베타 단계입니다.
 
 ### 관련 문서
 
 - [Next.js Docs - Image Component](https://nextjs.org/docs/app/api-reference/components/image#devicesizes)
 - [MDN - HTMLImageElement sizes property](https://developer.mozilla.org/en-US/docs/Web/API/HTMLImageElement/sizes)
 
-> Next.js에서 `import`문으로 가져온 이미지 데이터는 내부적으로 `width`와 `height`가 포함되어 있으므로,
-> `<Image />` 컴포넌트에서 따로 선언해주지 않아도 됩니다.
-
 ## 로딩 인디케이터 표시하기
 
-Next.js 어플리케이션을 Vercel이나 OpenNext를 사용하여 배포하면 대부분의 에셋이 CDN에 캐싱되어 빠른 로딩 속도를 보장합니다.
-하지만 이미지 사이즈가 최적화 후에도 여전히 크거나, 네트워크 로딩 속도가 느리면 '깜빡' 하고 표시될 수 있습니다.
-이미지 컴포넌트의 몇 가지 prop을 활용하면, 로딩 인디케이터를 표시하여 이미지 로딩 경험을 개선할 수 있습니다.
-아래는 이 블로그에서 실제로 사용되고 있는 이미지 컴포넌트입니다.
+<LoadingIndicatorDemo />
+
+웹 브라우저에서 이미지는 꽤나 늦게 표시되는 요소이지만, 기본 동작만으로는 이미지가 로드되고 있는 것인지 제대로 판별하기 어렵습니다.
+전부 로드되지 않은 이미지는 `alt`가 표시기되거나, 빈 공간이거나, 로드된 부분만 잘려서 표시되기 때문입니다.
+UX를 개선하기 위해, 저는 이미지에 로딩 인디케이터와 트랜지션을 적용하려고 하였습니다. 일반적으로는 아래와 같이 작성합니다.
+
+```tsx
+export default function LoadingImage({ src, alt, width, height }) {
+  const [loaded, setLoaded] = useState(true)
+  const ref = useRef<HTMLImageElement>(null)
+
+  useLayoutEffect(() => {
+    if (ref.current?.complete) setLoaded(false);
+  }, [src])
+
+  return (
+    <div>
+      {!loaded && <Indicator />}
+      <Image
+        ref={ref}
+        className={cn("transition-opacity", loaded && "opacity-0")}
+        onLoad={() => setLoaded(true)} />
+      />
+    </div>
+  )
+}
+```
+
+`useLayoutEffect`를 활용해 인디케이터를 클라이언트에서만 활성화되도록 하여,
+SSR 결과만을 사용할 수 있는 비-자바스크립트 환경(웹 크롤러 등)에서도 정상적으로 표시될 수 있도록 합니다.
+
+하지만 이는 커스터마이징이 자유롭지 않습니다. `LoadingImage` 컴포넌트만 사용해서는
+내부의 `div`와 `<Image>`에 모든 prop을 문제없이 전달하기는 현실적으로 쉽지 않습니다.
+
+또, 이미 로컬에서 캐시되어 사실상 즉시 표시될 수 있는 이미지를 구분하기 힘듭니다.
+Next.js `<Image>`는 별도 선언이 없으면 내부의 `<img>`에 `loading="lazy"`를 전달하는데,
+이 옵션은 이미지의 위치를 기준으로 로딩 여부를 결정하기 위해 이미지 로딩 자체를 한 박자 늦추도록 합니다.
+
+이는 이미 캐시된 이미지임에도 페이지가 전환된 후 이미지가 다른 요소에 비해 한 박자 늦게 표시되도록 하며,
+`useLayoutEffect`에서 `complete`가 `true`를 반환할 확률이 극도로 낮아지도록 합니다.
+트랜지션이 적용된 경우 거의 모든 페이지 전환에서 트랜지션이 전부 출력됩니다.
+
+따라서 저는 이미지 컴포넌트를 다음과 같이 작성했습니다.
 
 ```tsx title="image.tsx"
 'use client';
 
-import { useLayoutEffect, useRef, useState } from 'react';
-import type { ComponentProps, ReactElement } from 'react';
+import { ComponentProps, ReactElement, SyntheticEvent, useEffect, useMemo, useRef } from 'react';
+import { useState } from 'react';
 import { ImageOffIcon } from 'lucide-react';
-import type { ImageProps } from 'next/image';
+import { getImageProps, ImageProps } from 'next/image';
 import { Slot } from 'radix-ui';
 import { cn } from '@/lib/utils/cn';
-import { useDelayedUnmount } from '@/lib/hooks/mount';
 import Loader from '@/components/loader';
+import { resolveCurrentSrc } from '@insd47/current-src';
+import { useDelayedUnmount } from '@/lib/hooks/mount';
 
 export default function ImageFrame({ children, className, ...props }: Props) {
-  const src = children?.props.src;
+  if (!children) throw new Error('ImageFrame must have <Image /> as a child');
+
+  const src = children.props.src;
   const ref = useRef<HTMLImageElement | null>(null);
-  const [status, setStatus] = useState<'loading' | 'ready' | 'error'>('ready');
+
+  const seen = useMemo(() => {
+    if (typeof window === 'undefined') return false;
+    const { props } = getImageProps(children.props);
+
+    const src = props.srcSet
+      ? (resolveCurrentSrc(props.srcSet, props.sizes) ?? props.src)
+      : props.src;
+
+    const key = new URL(src, window.location.href).href;
+    return sessionStorage.getItem(`ImageFrame:${key}`) === 'true';
+  }, [children.props]);
+
+  const [status, setStatus] = useState<Status>(hydrated && !seen ? 'loading' : 'ready');
   const indicator = useDelayedUnmount(status === 'loading', 300);
 
-  if (!src && status !== 'error') {
-    setStatus('error');
-  } else if (src && status === 'error') {
+  useEffect(() => {
+    if (!hydrated) hydrated = true;
+    if (!ref.current?.complete) setStatus('loading');
+  }, []);
+
+  function onLoad({ currentTarget }: SyntheticEvent<HTMLImageElement>) {
     setStatus('ready');
+    const key = new URL(currentTarget.currentSrc, window.location.href).href;
+    sessionStorage.setItem(`ImageFrame:${key}`, 'true');
   }
 
-  useLayoutEffect(() => {
-    if (!ref.current || !src) return;
-    const { complete, naturalWidth } = ref.current;
-    setStatus(complete ? (naturalWidth > 0 ? 'ready' : 'error') : 'loading');
-  }, [src]);
-
   return (
-    <div {...props} className={cn('relative bg-foreground/2 overflow-hidden', className)}>
-      {children && src && status !== 'error' && (
-        <ImageSlot
-          ref={ref}
-          className={cn(
-            'size-full object-cover shrink-0 opacity-0 transition-opacity duration-300',
-            status === 'ready' && 'opacity-100',
-          )}
-          onLoad={() => setStatus('ready')}
-          onError={() => setStatus('error')}
-          sizes="auto, 100vw"
-        >
-          {children}
-        </ImageSlot>
+    <div
+      {...props}
+      className={cn(
+        'relative bg-foreground/2 overflow-hidden transition-colors duration-300',
+        status === 'ready' && 'bg-background bg-noise',
+        className,
       )}
+    >
       {indicator && (
         <Loader
           className={cn(
-            'absolute left-1/2 top-1/2 size-6 -translate-x-1/2 -translate-y-1/2',
-            'text-xl text-muted-foreground transition-opacity duration-300 opacity-0',
-            status === 'loading' && 'opacity-100',
+            'absolute -z-1 left-1/2 top-1/2 size-6 -translate-x-1/2 -translate-y-1/2',
+            'text-xl text-muted-foreground',
           )}
         />
+      )}
+      {src && status !== 'error' && (
+        <ImageSlot
+          ref={ref}
+          className={cn(
+            'size-full object-cover shrink-0 transition-opacity duration-300',
+            status !== 'ready' && 'opacity-0',
+          )}
+          onLoad={onLoad}
+          onError={() => setStatus('error')}
+          loading={seen ? 'eager' : 'lazy'}
+          decoding={seen ? 'sync' : 'async'}
+          suppressHydrationWarning
+        >
+          {children}
+        </ImageSlot>
       )}
       {(!src || status === 'error') && (
         <ImageOffIcon
@@ -112,54 +261,64 @@ export default function ImageFrame({ children, className, ...props }: Props) {
             'text-muted-foreground',
           )}
         />
-      )}44
+      )}
     </div>
   );
 }
 
+type Status = 'loading' | 'ready' | 'error';
 const ImageSlot = Slot.createSlot<HTMLImageElement, Omit<ImageProps, 'src' | 'alt'>>('ImageFrame');
+let hydrated = false;
 
 interface Props extends Omit<ComponentProps<'div'>, 'children'> {
   children?: ReactElement<ImageProps> | null;
 }
 ```
 
-사용처에서는 다음과 같이 사용합니다:
+사용처에서는 이렇게 작성합니다.
 
 ```tsx
-// 게시물 카드 옆 썸네일
-<ImageFrame className="size-32.5 border-r md:w-50 object-cover overflow-hidden shrink-0">
-  <Image src={thumbnail} alt={title} quality={75} />
+<ImageFrame className="size-32.5 md:w-50 object-cover">
+  <Image src={thumbnail} alt={title} sizes="200px" quality={75} />
 </ImageFrame>
 ```
 
-- 이미지가 이미 캐시되어 있는 경우 `onLoad`가 호출되지 않기 떄문에,
-  `element.complete`를 사용한 로드 여부를 확인하는 것이 사실상 필수입니다.
-- `ImageFrame`에서 `src`, `width` 등 이미지 컴포넌트의 Prop을 받는 대신,
-  Radix Slot을 사용하여 자식 요소로 Next.js 이미지 컴포넌트를 그대로 받도록 하여 버전 업그레이드의 영향을 최소화하였습니다.
-- 로딩 상태의 기본값을 `ready`로 놓고 `useLayoutEffect`를 사용하여 `loading`으로 전환하도록 하여
-  JavaScript가 비활성화되어도 이미지를 볼 수 있도록 처리합니다.
-- `<img>`는 자식을 가질 수 없기 때문에 로딩 인디케이터를 표시하려면 `<div>` 사용이 필수인데,
-  이러한 구조에서는 DOM 위계가 확실히 보이기 때문에 확장성이 매우 좋습니다.
+- Radix `Slot`을 활용하여, 자식 컴포넌트로 `<Image>`를 그대로 받아, 확장성이 뛰어납니다.
+  - 부모 요소에서 자식 요소의 props를 그대로 사용할 수 있습니다.
+  - 동시에 부모 `div`의 props를 확장하여, 사용처에서 부모 `div`와 `<Image>`의 props을 전부 덮어쓸 수 있습니다.
+- 페이지 전환 시 캐시된 이미지가 즉시 표시될 확률을 높입니다.
+  - `sessionStorage`를 활용하여 한 번 본 이미지를 기록하고, 렌더링 전 동기적으로 이를 확인합니다.
+  - 기록된 이미지는 `loading="eager"` 및 `decoding="sync"`를 적용하여 이미지 로드 시점을 앞당깁니다.
+  - `img.currentSrc` 및 전용 Parser 패키지를 활용하여 정확한 `srcSet` 후보를 키로 삼습니다.
+  - 동기적 파싱의 한계로, `sizes="auto"`를 지원하지 않습니다.
+- SSR을 보다 깔끔하게 분기합니다. 전용 `hydrated` 변수를 사용하여,
+  서버를 거치지 않는 렌더는 state 초기값 자체에서 `loading`을 설정할 수 있도록 하였습니다.
 
-> `ImageFrame`은 Client Component로서 자식의 props를 활용하기 떄문에
-> 만약 자식 `Image`가 Server Component로서 렌더링된다면 충돌이 발생합니다. 이 점을 유의하여 사용하여야 합니다.
+렌더링 전 동기적으로 정확한 `srcSet` 후보를 뽑기 위하여,
+[`@insd47/current-src`](https://github.com/insd47/current-src) 패키지를 만들었습니다. 다음과 같이 설치하실 수 있습니다.
+
+```shell
+pnpm install @insd47/current-src
+```
+
+> 브라우저에서 이미지가 캐싱되었는지 확인할 수 있는 전용 API가 없어 부득이하게 `sessionStorage`를 사용하였습니다.
+> `fetch(url, { cache: 'only-if-cached' })`나 `performance.getEntriesByName` 등 다양한 방법을 시도해보았지만,
+> 저는 `sessionStorage`가 가장 적절한 타협점으로 결론지었습니다.
 
 ## 외부 어플리케이션에서 사용하기
 
-Next.js의 이미지 최적화의 원리는 src를 `/_next/image` 라우트를 거쳐 로드하도록 하는 것입니다.
-해당 route는 원본 이미지를 변환 및 압축하고, 지정된 사이즈로 다운스케일링하여 반환합니다. 변환 과정은 꽤 오래 걸리지만,
-대부분의 Next.js 배포 환경은 이를 CDN에 캐싱할 것을 염두에 두기 때문에 결과적으로는 최적화의 역할을 수행합니다.
-
+앞서 살펴보았듯 Next.js의 이미지 최적화의 원리는 src를 `/_next/image` 라우트를 거쳐 로드하도록 하는 것입니다.
 만약 동일한 CDN 서버에 의존하는 로컬 어플리케이션(ex: 사이트를 관리하는 CMS 소프트웨어)가 있다면, 어떤 언어로 작성되어 있든
-Next.js 서버의 이미지 최적화 기능을 동일하게 누릴 수 있습니다. 예를 들어, React SPA를 프론트엔드로 두는 Tauri 앱에서:
+Next.js 서버의 이미지 최적화 기능을 동일하게 누릴 수 있습니다.
+
+예를 들어, React SPA를 프론트엔드로 두는 Tauri 앱에서 다음과 같이 Next `<Image />`를 흉내내는 컴포넌트를 작성할 수 있습니다.
 
 ```tsx title="image.tsx"
 import { type ComponentProps, type SyntheticEvent } from 'react';
 import { resources } from '@/lib/features/aws';
 
 /**
- * 비 Next 환경용 `next/image` Mock입니다.
+ * console(비 Next 환경)용 `next/image` Mock입니다.
  * main의 Image Optimizer를 빌려 쓰기 위해 옵티마이저 URL과 srcSet을 직접 만듭니다.
  */
 export default function NextImage({
@@ -169,64 +328,68 @@ export default function NextImage({
   height,
   quality = 75,
   sizes,
-  onLoad,
   ...props
-}: NextImageProps) {
-  const { widths, kind } = getWidths(width, sizes);
-  const srcSet = widths
-    .map((w, i) => `${loader(src, w, quality)} ${kind === 'w' ? `${w}w` : `${i + 1}x`}`)
-    .join(', ');
+}: Props) {
+  const srcSet = width ? buildSrcSet(src, width, quality, sizes) : undefined;
 
-  function handleLoad(event: SyntheticEvent<HTMLImageElement>) {
-    void event.currentTarget.decode().finally(() => onLoad?.(event));
+  function ref(e: HTMLImageElement | null) {
+    if (typeof props.ref === 'function') props.ref(e);
+    else if (props.ref) props.ref.current = e;
+
+    if (e?.complete) onLoad({ currentTarget: e } as SyntheticEvent<HTMLImageElement>);
+  }
+
+  function onLoad(event: SyntheticEvent<HTMLImageElement>) {
+    void event.currentTarget.decode().finally(() => props.onLoad?.(event));
   }
 
   return (
     <img
+      {...props}
+      ref={ref}
       alt={alt}
-      src={loader(src, widths[widths.length - 1], quality)}
-      srcSet={srcSet}
       sizes={sizes}
       width={width}
       height={height}
-      onLoad={handleLoad}
-      {...props}
+      onLoad={onLoad}
+      srcSet={srcSet?.map((e) => e.join(' ')).join(', ')}
+      src={srcSet?.[srcSet.length - 1][0] ?? src}
     />
   );
 }
 
-interface NextImageProps extends Omit<
-  ComponentProps<'img'>,
-  'src' | 'width' | 'height' | 'srcSet'
-> {
-  src: string;
-  width?: number;
-  height?: number;
-  quality?: number;
+function buildSrcSet(src: string, width: number, quality: number, sizes?: string) {
+  if (sizes) {
+    return allSizes.map((size) => [buildImageUrl(src, size, quality), `${size}w`] as const);
+  }
+
+  return [width, width * 2]
+    .map((w) => allSizes.find((s) => s >= w) ?? 3840)
+    .map((s, i) => [buildImageUrl(src, s, quality), `${i + 1}x`] as const);
+}
+
+function buildImageUrl(src: string, size: number, quality: number) {
+  const { stage } = resources.App;
+  const optimizer = stage === 'production' ? resources.Router.url : 'http://localhost:3000';
+  const resolved = src.startsWith('/storage/') ? `${resources.Router.url}${src}` : src;
+
+  return `${optimizer}/_next/image?url=${encodeURIComponent(resolved)}&w=${size}&q=${quality}`;
 }
 
 const deviceSizes = [640, 750, 828, 1080, 1200, 1920, 2048, 3840];
 const imageSizes = [16, 32, 48, 64, 96, 128, 256, 384];
 const allSizes = [...imageSizes, ...deviceSizes];
 
-function loader(src: string, width: number, quality: number) {
-  const { stage } = resources.App;
-  const optimizer = stage === 'production' ? resources.Router.url : 'http://localhost:3000';
-  const resolved = src.startsWith('/storage/') ? `${resources.Router.url}${src}` : src;
-
-  return `${optimizer}/_next/image?url=${encodeURIComponent(resolved)}&w=${width}&q=${quality}`;
-}
-
-function getWidths(width: number | undefined, sizes: string | undefined) {
-  if (sizes || typeof width !== 'number') {
-    return { widths: deviceSizes, kind: 'w' as const };
-  }
-
-  const widths = [...new Set([width, width * 2].map((w) => allSizes.find((s) => s >= w) ?? 3840))];
-  return { widths, kind: 'x' as const };
+interface Props extends Omit<ComponentProps<'img'>, 'src' | 'width' | 'height' | 'srcSet'> {
+  src: string;
+  width?: number;
+  height?: number;
+  quality?: number;
 }
 ```
 
-이런 식으로 `next/image`를 흉내 내는 컴포넌트를 작성하여 사용할 수 있습니다. 단순히 React 컴포넌트 뿐만 아니라,
-Jetpack Compose나 Flutter 등 다른 프레임워크에도 동일한 Mock을 작성하여 사용할 수도 있습니다.
+- Next.js의 `srcSet` 생성 로직을 그대로 흉내냈습니다.
+- Ref Function을 활용하여 `onLoad`가 무조건 실행될 수 있도록 보장하였습니다. 이는 위의 `ImageFrame`을 제대로 사용하기 위한 조건입니다.
+
+단순히 React 컴포넌트 뿐만 아니라, Jetpack Compose나 Flutter 등 다른 프레임워크에도 동일한 Mock을 작성하여 사용할 수도 있습니다.
 스토리지(S3 등)에는 원본 파일을 올리고, 모든 사용처에서 Next.js의 이미지 최적화 함수에 기대어 이미지를 렌더링할 수 있는 것입니다.

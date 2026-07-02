@@ -8,6 +8,9 @@ importers:
 
   .:
     dependencies:
+      '@insd47/current-src':
+        specifier: ^1.0.0
+        version: 1.0.0
       '@insd47/ide-file-icons':
         specifier: ^0.1.0
         version: 0.1.0
@@ -461,6 +464,9 @@ packages:
     engines: {node: ^18.17.0 || ^20.3.0 || >=21.0.0}
     cpu: [x64]
     os: [win32]
+
+  '@insd47/current-src@1.0.0':
+    resolution: {integrity: sha512-eIUo99VyaEbYJStNFESIreIoqd6AxwiK7sESVoMhBMtnogsqPwlv/VYRRCHkx/s4PKw7qv8L6oMJjja7jFA5fQ==}
 
   '@insd47/ide-file-icons@0.1.0':
     resolution: {integrity: sha512-qZpC27vnMJFpLcrQuDW3sPfq01zixcVj7/WSzHA1LFcgr4Xqp6/rvwfV7sq26KPPUL90Xk+RwVwNi28rkUqrdA==}
@@ -3865,6 +3871,10 @@ snapshots:
 
   '@img/sharp-win32-x64@0.34.5':
     optional: true
+
+  '@insd47/current-src@1.0.0':
+    dependencies:
+      srcset: 5.0.3
 
   '@insd47/ide-file-icons@0.1.0': {}
 

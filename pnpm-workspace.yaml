@@ -3,3 +3,4 @@ allowBuilds:
   unrs-resolver: true
 minimumReleaseAgeExclude:
   - '@insd47/ide-file-icons@0.1.0'
+  - '@insd47/current-src@1.0.0'
