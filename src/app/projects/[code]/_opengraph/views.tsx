@@ -1,7 +1,7 @@
 import { ComponentProps } from 'react';
 import { readFile } from 'node:fs/promises';
 import { getStaticPath } from '@/lib/opengraph/path';
-import { OGArrayBufferImage } from '@/components/opengraph';
+import { SatoriArrayBufferImage } from '@/components/opengraph';
 
 export async function Banner({ src, style, ...props }: ComponentProps<'img'>) {
   const path = getStaticPath(src as string);
@@ -9,7 +9,7 @@ export async function Banner({ src, style, ...props }: ComponentProps<'img'>) {
   const buffer = Uint8Array.from(file).buffer;
 
   return (
-    <OGArrayBufferImage
+    <SatoriArrayBufferImage
       {...props}
       src={buffer}
       style={{ width: '100%', height: 440, objectFit: 'cover', ...style }}

@@ -3,7 +3,7 @@ import { readFile } from 'node:fs/promises';
 import { getPublicPath } from '@/lib/opengraph/path';
 import { Logo } from '@/components/header/logo';
 
-export async function OGRoot({ style, children, ...props }: ComponentProps<'div'>) {
+export async function SatoriRoot({ style, children, ...props }: ComponentProps<'div'>) {
   const file = await readFile(getPublicPath('/opengraph/noise.png'));
   const noise = Uint8Array.from(file).buffer;
 
@@ -20,13 +20,13 @@ export async function OGRoot({ style, children, ...props }: ComponentProps<'div'
         ...style,
       }}
     >
-      <OGArrayBufferImage src={noise} style={{ position: 'absolute', inset: 0 }} />
+      <SatoriArrayBufferImage src={noise} style={{ position: 'absolute', inset: 0 }} />
       {children}
     </div>
   );
 }
 
-export function OGTitle({ style, ...props }: ComponentProps<'h1'>) {
+export function SatoriTitle({ style, ...props }: ComponentProps<'h1'>) {
   return (
     <h1
       {...props}
@@ -42,17 +42,17 @@ export function OGTitle({ style, ...props }: ComponentProps<'h1'>) {
   );
 }
 
-export function OGParagraph({ style, ...props }: ComponentProps<'p'>) {
+export function SatoriParagraph({ style, ...props }: ComponentProps<'p'>) {
   return (
     <p {...props} style={{ margin: 0, padding: 0, fontSize: 18, color: '#C1C1C1', ...style }} />
   );
 }
 
-export async function OGJoin({ style, ...props }: ComponentProps<'span'>) {
+export async function SatoriJoin({ style, ...props }: ComponentProps<'span'>) {
   return <span {...props} style={{ color: '#C1C1C199', ...style }} />;
 }
 
-export function OGLogo({ style, ...props }: ComponentProps<'svg'>) {
+export function SatoriLogo({ style, ...props }: ComponentProps<'svg'>) {
   return (
     <Logo
       {...props}
@@ -61,7 +61,7 @@ export function OGLogo({ style, ...props }: ComponentProps<'svg'>) {
   );
 }
 
-export function OGArrayBufferImage({ src, alt, ...props }: ArrayBufferImageProps) {
+export function SatoriArrayBufferImage({ src, alt, ...props }: ArrayBufferImageProps) {
   // eslint-disable-next-line @next/next/no-img-element
   return <img {...props} src={src as unknown as string} alt={alt} />;
 }

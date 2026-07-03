@@ -1,7 +1,7 @@
 import { ImageResponse } from 'next/og';
 import { getPost, getPostList } from '@/lib/content/posts';
 import { Thumbnail, Content, Metadata } from '@/app/posts/[slug]/_opengraph/views';
-import { OGRoot, OGTitle, OGParagraph, OGLogo } from '@/components/opengraph';
+import { SatoriRoot, SatoriTitle, SatoriParagraph, SatoriLogo } from '@/components/opengraph';
 import { getFonts } from '@/lib/opengraph/fonts';
 import { ClockIcon, TagIcon } from '@/app/posts/[slug]/_opengraph/icons';
 import formatter from '@/lib/utils/formatter';
@@ -12,23 +12,23 @@ export default async function OpenGraphImage({ params }: PageProps<'/posts/[slug
   const post = await getPost(slug);
 
   return new ImageResponse(
-    <OGRoot>
+    <SatoriRoot>
       <Thumbnail src={post.thumbnail.src} />
       <Content>
-        <OGTitle style={{ flex: 1 }}>{post.title}</OGTitle>
+        <SatoriTitle style={{ flex: 1 }}>{post.title}</SatoriTitle>
         <Metadata>
-          <OGParagraph style={{ display: 'flex', alignItems: 'center', gap: 9 }}>
+          <SatoriParagraph style={{ display: 'flex', alignItems: 'center', gap: 9 }}>
             <TagIcon />
             {post.tags.join(' · ')}
-          </OGParagraph>
-          <OGParagraph style={{ display: 'flex', alignItems: 'center', gap: 9 }}>
+          </SatoriParagraph>
+          <SatoriParagraph style={{ display: 'flex', alignItems: 'center', gap: 9 }}>
             <ClockIcon /> {formatter.date.format(post.published)}
-          </OGParagraph>
+          </SatoriParagraph>
         </Metadata>
       </Content>
 
-      <OGLogo />
-    </OGRoot>,
+      <SatoriLogo />
+    </SatoriRoot>,
     { ...size, fonts },
   );
 }

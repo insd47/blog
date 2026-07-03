@@ -1,7 +1,7 @@
 import { ImageResponse } from 'next/og';
 import { getFonts } from '@/lib/opengraph/fonts';
 import { getProject, getProjectList } from '@/lib/content/projects';
-import { OGRoot, OGTitle, OGParagraph, OGJoin, OGLogo } from '@/components/opengraph';
+import { SatoriRoot, SatoriTitle, SatoriParagraph, SatoriJoin, SatoriLogo } from '@/components/opengraph';
 import { Banner, Content } from '@/app/projects/[code]/_opengraph/views';
 import { Fragment } from 'react';
 import formatter from '@/lib/utils/formatter';
@@ -14,26 +14,26 @@ export default async function OpenGraphImage({ params }: PageProps<'/projects/[c
   const [start, end] = project.period;
 
   return new ImageResponse(
-    <OGRoot style={{ flexDirection: 'column' }}>
+    <SatoriRoot style={{ flexDirection: 'column' }}>
       <Banner src={project.banner.src} />
       <Content>
-        <OGTitle style={{ marginBottom: 8 }}>{project.title}</OGTitle>
-        <OGParagraph>
+        <SatoriTitle style={{ marginBottom: 8 }}>{project.title}</SatoriTitle>
+        <SatoriParagraph>
           {project.stacks.map((s, i) => (
             <Fragment key={s}>
-              {i > 0 && <OGJoin style={{ margin: '0 9px' }}>+</OGJoin>}
+              {i > 0 && <SatoriJoin style={{ margin: '0 9px' }}>+</SatoriJoin>}
               {s}
             </Fragment>
           ))}
-          <OGJoin style={{ margin: '0 9px' }}>|</OGJoin>
+          <SatoriJoin style={{ margin: '0 9px' }}>|</SatoriJoin>
           {!end && 'Since '}
           {formatter.year.format(start)}
           {end && '-' + formatter.year.format(end)}
-        </OGParagraph>
+        </SatoriParagraph>
       </Content>
 
-      <OGLogo />
-    </OGRoot>,
+      <SatoriLogo />
+    </SatoriRoot>,
     { ...size, fonts },
   );
 }
